@@ -1,0 +1,6 @@
+# Default text files
+* text=auto
+
+# Maven Wrapper
+mvnw text eol=lf
+mvnw.cmd text eol=crlf
