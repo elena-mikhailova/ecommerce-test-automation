@@ -8,6 +8,8 @@ import io.restassured.specification.RequestSpecification;
 
 
 public final class RequestSpecFactory {
+
+    // Automation Exercise returns JSON responses with text/html content type.
     static {
         RestAssured.registerParser("text/html", Parser.JSON);
     }

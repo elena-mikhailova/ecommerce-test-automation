@@ -7,10 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
+
 
 public class ProductsApiTest extends BaseApiTest {
     private ProductsApiClient productsApiClient;
@@ -18,11 +16,10 @@ public class ProductsApiTest extends BaseApiTest {
     @BeforeEach
     void setUp() {
         productsApiClient = new ProductsApiClient(requestSpecification);
-
     }
 
     @Test
-    @DisplayName("GET /productsList returns non-empty products list")
+    @DisplayName("GET /productsList returns a non-empty product list")
     void canGetAllProducts() {
         Response response = productsApiClient.getAllProducts();
         response.then()

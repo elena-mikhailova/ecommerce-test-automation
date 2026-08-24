@@ -1,7 +1,6 @@
 package com.github.elenamikhailova.automation.config;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 public final class TestConfig {
