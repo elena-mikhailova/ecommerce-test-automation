@@ -10,8 +10,6 @@ public abstract class BaseApiTest {
 
     @BeforeEach
     protected void setUpApi() {
-
         requestSpecification = RequestSpecFactory.createDefaultSpec();
-
     }
 }
