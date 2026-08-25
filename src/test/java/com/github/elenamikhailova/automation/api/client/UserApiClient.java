@@ -11,6 +11,7 @@ import static io.restassured.RestAssured.given;
 
 public class UserApiClient {
     private static final String CREATE_ACCOUNT = "/createAccount";
+    private static final String GET_USER_BY_EMAIL = "/getUserDetailByEmail";
 
     private final RequestSpecification requestSpecification;
     private static final Logger log =
@@ -44,6 +45,16 @@ public class UserApiClient {
                 .formParam("mobile_number", user.getMobileNumber())
                 .when()
                 .post(CREATE_ACCOUNT);
+    }
+
+    @Step("Get user by email")
+    public Response getUserByEmail(String email) {
+        log.info("Getting user via {}", GET_USER_BY_EMAIL);
+        return given()
+                .spec(requestSpecification)
+                .queryParam("email", email)
+                .when()
+                .get(GET_USER_BY_EMAIL);
     }
 }
 
