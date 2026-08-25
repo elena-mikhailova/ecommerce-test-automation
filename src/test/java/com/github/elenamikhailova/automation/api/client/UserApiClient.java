@@ -12,6 +12,7 @@ import static io.restassured.RestAssured.given;
 public class UserApiClient {
     private static final String CREATE_ACCOUNT = "/createAccount";
     private static final String GET_USER_BY_EMAIL = "/getUserDetailByEmail";
+    private static final String DELETE_USER_ACCOUNT = "/deleteAccount";
 
     private final RequestSpecification requestSpecification;
     private static final Logger log =
@@ -55,6 +56,17 @@ public class UserApiClient {
                 .queryParam("email", email)
                 .when()
                 .get(GET_USER_BY_EMAIL);
+    }
+
+    @Step("Delete user account")
+    public Response deleteUserAccount(CreateUserRequest user) {
+        log.info("Deleting user account {}", DELETE_USER_ACCOUNT);
+        return given()
+                .spec(requestSpecification)
+                .formParam("email", user.getEmail())
+                .formParam("password", user.getPassword())
+                .when()
+                .delete(DELETE_USER_ACCOUNT);
     }
 }
 

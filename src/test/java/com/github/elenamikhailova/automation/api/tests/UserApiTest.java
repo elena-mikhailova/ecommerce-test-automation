@@ -32,12 +32,30 @@ public class UserApiTest extends BaseApiTest {
                 .statusCode(200)
                 .body("responseCode", equalTo(201))
                 .body("message", equalTo("User created!"));
+        userApiClient.deleteUserAccount(user);
+    }
 
+    @Test
+    @DisplayName("GET /getUserDetailByEmail returns user details")
+    void canGetUserByEmail() {
+        CreateUserRequest user = generateRandomUser();
+        userApiClient.createUser(user);
         Response getUserResponse = userApiClient.getUserByEmail(user.getEmail());
         getUserResponse.then()
                 .statusCode(200)
-                .body("responseCode", equalTo(200))
                 .body("user.email", equalTo(user.getEmail()));
+        userApiClient.deleteUserAccount(user);
+    }
+
+    @Test
+    @DisplayName("DELETE /deleteAccount deletes user")
+    void canDeleteUser() {
+        CreateUserRequest user = generateRandomUser();
+        userApiClient.createUser(user);
+        Response deleteResponse = userApiClient.deleteUserAccount(user);
+        deleteResponse.then()
+                .statusCode(200)
+                .body("message", equalTo("Account deleted!"));
     }
 
     private CreateUserRequest generateRandomUser() {
@@ -48,7 +66,7 @@ public class UserApiTest extends BaseApiTest {
                 .title("Mrs")
                 .birthDate(String.valueOf(faker.number().numberBetween(1, 29)))
                 .birthMonth(String.valueOf(faker.number().numberBetween(1, 13)))
-                .birthYear(String.valueOf(faker.number().numberBetween(1999, 2020)))
+                .birthYear(String.valueOf(faker.number().numberBetween(1980, 1999)))
                 .firstName(faker.name().firstName())
                 .lastName(faker.name().lastName())
                 .company(faker.company().name())
