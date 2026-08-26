@@ -53,7 +53,7 @@ public class UserApiTest extends BaseApiTest {
     void canDeleteUser() {
         user = userData.generateRandomUser();
         userApiClient.createUser(user);
-        Response deleteResponse = userApiClient.deleteUserAccount(user);
+        Response deleteResponse = userApiClient.deleteUserAccount(user.getEmail(), user.getPassword());
         deleteResponse.then()
                 .statusCode(200)
                 .body("responseCode", equalTo(200))
@@ -61,10 +61,54 @@ public class UserApiTest extends BaseApiTest {
         user = null;
     }
 
+    @Test
+    @DisplayName("POST /verifyLogin accepts valid credentials")
+    void shouldVerifyLoginWithValidCredentials() {
+        user = userData.generateRandomUser();
+        userApiClient.createUser(user);
+        Response response = userApiClient.verifyLogin(user.getEmail(), user.getPassword());
+        response.then()
+                .statusCode(200)
+                .body("responseCode", equalTo(200))
+                .body("message", equalTo("User exists!"));
+    }
+
+    @Test
+    @DisplayName("POST /verifyLogin cannot accept invalid credentials")
+    void cannotVerifyLoginWithInvalidCredentials() {
+        user = userData.generateRandomUser();
+        userApiClient.createUser(user);
+        Response response = userApiClient.verifyLogin(user.getEmail(), "qwdockdok");
+        response.then()
+                .statusCode(200)
+                .body("responseCode", equalTo(404))
+                .body("message", equalTo("User not found!"));
+    }
+
+    @Test
+    @DisplayName("PUT /updateAccount updates the data of account")
+    void canUpdateUser() {
+        user = userData.generateRandomUser();
+        userApiClient.createUser(user);
+
+        CreateUserRequest updatedUser = user.toBuilder()
+                .firstName("cpcpvp")
+                .build();
+        Response updatedResponse = userApiClient.updateAccount(updatedUser);
+        updatedResponse.then()
+                .body("responseCode", equalTo(200))
+                .body("message", equalTo("User updated!"));
+        Response getUserResponse = userApiClient.getUserByEmail(user.getEmail());
+        getUserResponse.then()
+                .body("user.first_name", equalTo("cpcpvp"));
+        getUserResponse.prettyPeek();
+    }
+
+
     @AfterEach
     public void tearDown() {
         if (user != null) {
-            userApiClient.deleteUserAccount(user);
+            userApiClient.deleteUserAccount(user.getEmail(), user.getPassword());
         }
     }
 }

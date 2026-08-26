@@ -12,6 +12,7 @@ import org.slf4j.*;
 public class ProductsApiClient {
 
     private static final String PRODUCTS_LIST = "/productsList";
+    private static final String SEARCH_PRODUCT = "/searchProduct";
 
     private final RequestSpecification requestSpecification;
     private static final Logger log =
@@ -29,5 +30,16 @@ public class ProductsApiClient {
                 .when()
                 .get(PRODUCTS_LIST);
     }
+
+    @Step("Search product")
+    public Response searchProduct(String product) {
+        log.info("Searching product via {}", SEARCH_PRODUCT);
+        return given()
+                .spec(requestSpecification)
+                .formParam("search_product", product)
+                .when()
+                .post(SEARCH_PRODUCT);
+    }
+
 }
 
