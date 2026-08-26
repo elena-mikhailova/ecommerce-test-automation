@@ -24,6 +24,7 @@
         <slf4j.version>2.0.18</slf4j.version>
         <log4j2.version>2.26.1</log4j2.version>
         <lombok.version>1.18.46</lombok.version>
+        <datafaker.version>2.7.0</datafaker.version>
 
         <maven.surefire.version>3.5.6</maven.surefire.version>
         <maven.compiler.version>3.15.0</maven.compiler.version>
@@ -110,6 +111,13 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.datafaker</groupId>
+            <artifactId>datafaker</artifactId>
+            <version>${datafaker.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
