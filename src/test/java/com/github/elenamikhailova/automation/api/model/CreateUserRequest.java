@@ -2,8 +2,10 @@ package com.github.elenamikhailova.automation.api.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
-@Builder
+@Builder(toBuilder = true)
 public class CreateUserRequest {
     private String name;
     private String email;

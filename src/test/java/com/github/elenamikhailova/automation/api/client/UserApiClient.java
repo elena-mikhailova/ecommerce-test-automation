@@ -13,6 +13,8 @@ public class UserApiClient {
     private static final String CREATE_ACCOUNT = "/createAccount";
     private static final String GET_USER_BY_EMAIL = "/getUserDetailByEmail";
     private static final String DELETE_USER_ACCOUNT = "/deleteAccount";
+    private static final String VERIFY_LOGIN = "/verifyLogin";
+    private static final String UPDATE_ACCOUNT = "/updateAccount";
 
     private final RequestSpecification requestSpecification;
     private static final Logger log =
@@ -59,14 +61,51 @@ public class UserApiClient {
     }
 
     @Step("Delete user account")
-    public Response deleteUserAccount(CreateUserRequest user) {
+    public Response deleteUserAccount(String email, String password) {
         log.info("Deleting user account {}", DELETE_USER_ACCOUNT);
         return given()
                 .spec(requestSpecification)
-                .formParam("email", user.getEmail())
-                .formParam("password", user.getPassword())
+                .formParam("email", email)
+                .formParam("password", password)
                 .when()
                 .delete(DELETE_USER_ACCOUNT);
+    }
+
+    @Step("Verify login")
+    public Response verifyLogin(String email, String password) {
+        log.info("Verifying user login via {}", VERIFY_LOGIN);
+        return given()
+                .spec(requestSpecification)
+                .formParam("email", email)
+                .formParam("password", password)
+                .when()
+                .post(VERIFY_LOGIN);
+    }
+
+    @Step("Update user account")
+    public Response updateAccount(CreateUserRequest user) {
+        log.info("Updating account via {}", UPDATE_ACCOUNT);
+        return given()
+                .spec(requestSpecification)
+                .formParam("name", user.getName())
+                .formParam("email", user.getEmail())
+                .formParam("password", user.getPassword())
+                .formParam("title", user.getTitle())
+                .formParam("birth_date", user.getBirthDate())
+                .formParam("birth_month", user.getBirthMonth())
+                .formParam("birth_year", user.getBirthYear())
+                .formParam("firstname", user.getFirstName())
+                .formParam("lastname", user.getLastName())
+                .formParam("company", user.getCompany())
+                .formParam("address1", user.getAddress1())
+                .formParam("address2", user.getAddress2())
+                .formParam("country", user.getCountry())
+                .formParam("zipcode", user.getZipCode())
+                .formParam("state", user.getState())
+                .formParam("city", user.getCity())
+                .formParam("mobile_number", user.getMobileNumber())
+                .when()
+                .put(UPDATE_ACCOUNT);
     }
 }
 

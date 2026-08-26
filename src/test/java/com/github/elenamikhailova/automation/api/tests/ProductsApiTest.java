@@ -28,4 +28,16 @@ public class ProductsApiTest extends BaseApiTest {
                 .body("products", notNullValue())
                 .body("products", not(empty()));
     }
+
+    @Test
+    @DisplayName("POST /searchProduct returns a product")
+    void canSearchProducts() {
+        Response response = productsApiClient.searchProduct("top");
+        response.then()
+                .statusCode(200)
+                .body("responseCode", equalTo(200))
+                .body("products", not(empty()))
+                .body("products.name", hasItem(containsStringIgnoringCase("top")));
+
+    }
 }
