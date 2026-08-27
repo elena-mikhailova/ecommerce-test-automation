@@ -10,6 +10,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.empty;
@@ -85,6 +87,24 @@ public class UserApiTest extends BaseApiTest {
                 .body("message", equalTo("User not found!"));
     }
 
+    @ParameterizedTest(name = "{0}")
+    @DisplayName("POST /verifyLogin rejects invalid credentials")
+    @MethodSource("com.github.elenamikhailova.automation.api.data.UserData#invalidLoginCases")
+    void rejectsInvalidCredentials(String caseName,
+                                   CreateUserRequest testUser,
+                                   String email,
+                                   String password,
+                                   int expectedResponseCode,
+                                   String expectedMessage) {
+        user = testUser;
+        userApiClient.createUser(user);
+        Response response = userApiClient.verifyLogin(email, password);
+        response.then()
+                .statusCode(200)
+                .body("responseCode", equalTo(expectedResponseCode))
+                .body("message", equalTo(expectedMessage));
+    }
+
     @Test
     @DisplayName("PUT /updateAccount updates the data of account")
     void canUpdateUser() {
@@ -101,7 +121,6 @@ public class UserApiTest extends BaseApiTest {
         Response getUserResponse = userApiClient.getUserByEmail(user.getEmail());
         getUserResponse.then()
                 .body("user.first_name", equalTo("cpcpvp"));
-        getUserResponse.prettyPeek();
     }
 
 

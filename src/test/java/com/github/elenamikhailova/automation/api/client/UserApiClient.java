@@ -6,7 +6,6 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.slf4j.*;
 
-
 import static io.restassured.RestAssured.given;
 
 public class UserApiClient {
@@ -74,10 +73,15 @@ public class UserApiClient {
     @Step("Verify login")
     public Response verifyLogin(String email, String password) {
         log.info("Verifying user login via {}", VERIFY_LOGIN);
-        return given()
-                .spec(requestSpecification)
-                .formParam("email", email)
-                .formParam("password", password)
+        RequestSpecification request = given()
+                .spec(requestSpecification);
+        if (email != null) {
+            request.formParam("email", email);
+        }
+        if (password != null) {
+            request.formParam("password", password);
+        }
+        return request
                 .when()
                 .post(VERIFY_LOGIN);
     }
