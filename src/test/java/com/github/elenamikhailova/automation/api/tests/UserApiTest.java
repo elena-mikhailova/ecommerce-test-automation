@@ -5,7 +5,6 @@ import com.github.elenamikhailova.automation.api.data.UserData;
 import com.github.elenamikhailova.automation.api.model.CreateUserRequest;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import io.restassured.response.Response;
-import net.datafaker.Faker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +13,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.empty;
 
 public class UserApiTest extends BaseApiTest {
     private UserApiClient userApiClient;
@@ -75,18 +73,6 @@ public class UserApiTest extends BaseApiTest {
                 .body("message", equalTo("User exists!"));
     }
 
-    @Test
-    @DisplayName("POST /verifyLogin cannot accept invalid credentials")
-    void cannotVerifyLoginWithInvalidCredentials() {
-        user = userData.generateRandomUser();
-        userApiClient.createUser(user);
-        Response response = userApiClient.verifyLogin(user.getEmail(), "qwdockdok");
-        response.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(404))
-                .body("message", equalTo("User not found!"));
-    }
-
     @ParameterizedTest(name = "{0}")
     @DisplayName("POST /verifyLogin rejects invalid credentials")
     @MethodSource("com.github.elenamikhailova.automation.api.data.UserData#invalidLoginCases")
@@ -110,22 +96,24 @@ public class UserApiTest extends BaseApiTest {
     void canUpdateUser() {
         user = userData.generateRandomUser();
         userApiClient.createUser(user);
-
+        String updatedFirstName = userData.generateFirstName();
         CreateUserRequest updatedUser = user.toBuilder()
-                .firstName("cpcpvp")
+                .firstName(updatedFirstName)
                 .build();
         Response updatedResponse = userApiClient.updateAccount(updatedUser);
         updatedResponse.then()
+                .statusCode(200)
                 .body("responseCode", equalTo(200))
                 .body("message", equalTo("User updated!"));
         Response getUserResponse = userApiClient.getUserByEmail(user.getEmail());
         getUserResponse.then()
-                .body("user.first_name", equalTo("cpcpvp"));
+                .statusCode(200)
+                .body("user.first_name", equalTo(updatedFirstName));
     }
 
 
     @AfterEach
-    public void tearDown() {
+    public void cleanUp() {
         if (user != null) {
             userApiClient.deleteUserAccount(user.getEmail(), user.getPassword());
         }
