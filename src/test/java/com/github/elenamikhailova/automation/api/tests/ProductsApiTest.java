@@ -1,19 +1,19 @@
 package com.github.elenamikhailova.automation.api.tests;
 
 import com.github.elenamikhailova.automation.api.client.ProductsApiClient;
-import com.github.elenamikhailova.automation.api.data.ProductData;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.hamcrest.Matchers.*;
 
 
 public class ProductsApiTest extends BaseApiTest {
     private ProductsApiClient productsApiClient;
-    private ProductData productData = new ProductData();
 
     @BeforeEach
     void setUp() {
@@ -31,10 +31,10 @@ public class ProductsApiTest extends BaseApiTest {
                 .body("products", not(empty()));
     }
 
-    @Test
-    @DisplayName("POST /searchProduct returns a product")
-    void canSearchProducts() {
-        String searchTerm = productData.generateSearchTerm();
+    @ParameterizedTest(name = "Search term: {0}")
+    @DisplayName("POST /searchProduct returns matching products")
+    @MethodSource("com.github.elenamikhailova.automation.api.data.ProductData#searchTerms")
+    void canSearchProducts(String searchTerm) {
         Response response = productsApiClient.searchProduct(searchTerm);
         response.then()
                 .statusCode(200)
