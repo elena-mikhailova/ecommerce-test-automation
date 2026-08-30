@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.*;
 public class UserApiTest extends BaseApiTest {
     private UserApiClient userApiClient;
     private CreateUserRequest user;
-    private UserData userData = new UserData();
+    private final UserData userData = new UserData();
 
 
     @BeforeEach
@@ -113,7 +113,7 @@ public class UserApiTest extends BaseApiTest {
 
 
     @AfterEach
-    public void cleanUp() {
+    void cleanUp() {
         if (user != null) {
             userApiClient.deleteUserAccount(user.getEmail(), user.getPassword());
         }

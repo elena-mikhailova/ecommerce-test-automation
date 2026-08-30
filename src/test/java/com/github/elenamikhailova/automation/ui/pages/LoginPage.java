@@ -2,10 +2,14 @@ package com.github.elenamikhailova.automation.ui.pages;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import lombok.Getter;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class LoginPage {
+
+    private static final String LOGIN_PATH = "/login";
 
     private final SelenideElement emailInput =
             $("[data-qa='login-email']");
@@ -16,6 +20,7 @@ public class LoginPage {
     private final SelenideElement loginButton =
             $("[data-qa='login-button']");
 
+    @Getter
     private final SelenideElement errorMessage =
             emailInput.closest("form").$("p");
 
@@ -40,8 +45,9 @@ public class LoginPage {
         enterPassword(password);
         clickLoginButton();
     }
-
-    public SelenideElement getErrorMessage() {
-        return errorMessage;
+    @Step("Open login page")
+    public void openPage() {
+        open(LOGIN_PATH);
     }
+
 }

@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 
-import static com.codeborne.selenide.Selenide.open;
-
 import com.github.elenamikhailova.automation.config.RequestSpecFactory;
 
 public class LoginUiTest extends BaseWebTest {
@@ -36,7 +34,7 @@ public class LoginUiTest extends BaseWebTest {
     void canLoginWithValidCredentials() {
         user = userData.generateRandomUser();
         userApiClient.createUser(user);
-        open("/login");
+        objLoginPage.openPage();
         objLoginPage.login(user.getEmail(), user.getPassword());
         header.getLoggedInUser()
                 .shouldBe(visible)
@@ -44,7 +42,7 @@ public class LoginUiTest extends BaseWebTest {
     }
 
     @AfterEach
-    public void cleanUp() {
+    void cleanUp() {
         if (user != null) {
             userApiClient.deleteUserAccount(user.getEmail(), user.getPassword());
         }
