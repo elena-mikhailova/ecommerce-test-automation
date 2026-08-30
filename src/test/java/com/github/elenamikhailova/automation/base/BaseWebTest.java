@@ -7,9 +7,12 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeAll;
 
 public abstract class BaseWebTest {
+
     @BeforeAll
     static void setUpUi(){
         Configuration.baseUrl = TestConfig.getUiBaseUrl();
+        Configuration.pageLoadStrategy = "eager";
+        Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
         Configuration.timeout = 8000;
 

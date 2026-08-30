@@ -41,7 +41,6 @@ public class LoginPage {
         clickLoginButton();
     }
 
-    @Step("Error message")
     public SelenideElement getErrorMessage() {
         return errorMessage;
     }
