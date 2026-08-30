@@ -25,5 +25,9 @@ public final class TestConfig {
     public static String getApiBaseUrl() {
         return PROPERTIES.getProperty("api.base.url");
     }
+
+    public static String getUiBaseUrl() {
+        return PROPERTIES.getProperty("ui.base.url");
+    }
 }
 
