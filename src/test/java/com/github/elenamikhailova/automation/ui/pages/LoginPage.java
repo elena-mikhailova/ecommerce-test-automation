@@ -45,6 +45,7 @@ public class LoginPage {
         enterPassword(password);
         clickLoginButton();
     }
+
     @Step("Open login page")
     public void openPage() {
         open(LOGIN_PATH);

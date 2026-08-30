@@ -11,10 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
-
 import com.github.elenamikhailova.automation.config.RequestSpecFactory;
+
+import static com.codeborne.selenide.Condition.*;
 
 public class LoginUiTest extends BaseWebTest {
     private final LoginPage objLoginPage = new LoginPage();
@@ -39,6 +38,18 @@ public class LoginUiTest extends BaseWebTest {
         header.getLoggedInUser()
                 .shouldBe(visible)
                 .shouldHave(text(user.getName()));
+    }
+
+    @Test
+    @DisplayName("User cannot log in with invalid credentials")
+    void cannotLoginWithInvalidCredentials() {
+        CreateUserRequest invalidUser = userData.generateRandomUser();
+        objLoginPage.openPage();
+        objLoginPage.login(invalidUser.getEmail(), invalidUser.getPassword());
+        objLoginPage.getErrorMessage()
+                .shouldBe(visible)
+                .shouldHave(exactText("Your email or password is incorrect!"));
+
     }
 
     @AfterEach

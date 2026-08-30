@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 public abstract class BaseWebTest {
 
     @BeforeAll
-    static void setUpUi(){
+    static void setUpUi() {
         Configuration.baseUrl = TestConfig.getUiBaseUrl();
         Configuration.pageLoadStrategy = "eager";
         Configuration.browser = "chrome";
