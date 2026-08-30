@@ -50,5 +50,4 @@ public class LoginPage {
     public void openPage() {
         open(LOGIN_PATH);
     }
-
 }
