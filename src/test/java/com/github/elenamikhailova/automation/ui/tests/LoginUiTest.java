@@ -27,7 +27,6 @@ public class LoginUiTest extends BaseWebTest {
     void setUp() {
         userApiClient = new UserApiClient(RequestSpecFactory.createDefaultSpec());
     }
-
     @Test
     @DisplayName("User can log in with valid credentials")
     void canLoginWithValidCredentials() {
