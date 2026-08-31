@@ -6,8 +6,7 @@ import com.github.elenamikhailova.automation.ui.pages.ProductsPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 
 public class CartUiTest extends BaseWebTest {
 
@@ -23,5 +22,20 @@ public class CartUiTest extends BaseWebTest {
         objCartPage.getProductNames()
                 .findBy(exactText(productName))
                 .shouldBe(visible);
+    }
+
+    @Test
+    @DisplayName("User can delete product from cart")
+    void canDeleteProductFromCart() {
+        objProductsPage.openPage();
+        String productName = objProductsPage.addFirstProductToCart();
+        objProductsPage.clickViewCartLink();
+        objCartPage.getProductNames()
+                .findBy(exactText(productName))
+                .shouldBe(visible);
+        objCartPage.deleteProduct(productName);
+        objCartPage.getProductNames()
+                .findBy(exactText(productName))
+                .shouldNot(exist);
     }
 }
