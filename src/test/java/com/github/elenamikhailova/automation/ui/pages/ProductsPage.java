@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import lombok.Getter;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ProductsPage {
@@ -40,13 +39,6 @@ public class ProductsPage {
     @Step("Open products page")
     public void openPage() {
         open(PRODUCTS_PATH);
-    }
-
-    @Step("Add product '{productName}' to cart")
-    public void addProductToCart(String productName) {
-        SelenideElement productCard = productCards
-                .findBy(text(productName));
-        productCard.$(".productinfo .add-to-cart").click();
     }
 
     @Step("Click view cart link")

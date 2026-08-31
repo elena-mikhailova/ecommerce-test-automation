@@ -10,16 +10,16 @@ import static com.codeborne.selenide.Condition.*;
 
 public class CartUiTest extends BaseWebTest {
 
-    private final ProductsPage objProductsPage = new ProductsPage();
-    private final CartPage objCartPage = new CartPage();
+    private final ProductsPage productsPage = new ProductsPage();
+    private final CartPage cartPage = new CartPage();
 
     @Test
     @DisplayName("User can add product to cart")
     void canAddProductToCart() {
-        objProductsPage.openPage();
-        String productName = objProductsPage.addFirstProductToCart();
-        objProductsPage.clickViewCartLink();
-        objCartPage.getProductNames()
+        productsPage.openPage();
+        String productName = productsPage.addFirstProductToCart();
+        productsPage.clickViewCartLink();
+        cartPage.getProductNames()
                 .findBy(exactText(productName))
                 .shouldBe(visible);
     }
@@ -27,14 +27,14 @@ public class CartUiTest extends BaseWebTest {
     @Test
     @DisplayName("User can delete product from cart")
     void canDeleteProductFromCart() {
-        objProductsPage.openPage();
-        String productName = objProductsPage.addFirstProductToCart();
-        objProductsPage.clickViewCartLink();
-        objCartPage.getProductNames()
+        productsPage.openPage();
+        String productName = productsPage.addFirstProductToCart();
+        productsPage.clickViewCartLink();
+        cartPage.getProductNames()
                 .findBy(exactText(productName))
                 .shouldBe(visible);
-        objCartPage.deleteProduct(productName);
-        objCartPage.getProductNames()
+        cartPage.deleteProduct(productName);
+        cartPage.getProductNames()
                 .findBy(exactText(productName))
                 .shouldNot(exist);
     }

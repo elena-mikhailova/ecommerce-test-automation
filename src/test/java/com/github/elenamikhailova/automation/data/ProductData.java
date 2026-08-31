@@ -1,4 +1,4 @@
-package com.github.elenamikhailova.automation.api.data;
+package com.github.elenamikhailova.automation.data;
 
 import java.util.stream.Stream;
 

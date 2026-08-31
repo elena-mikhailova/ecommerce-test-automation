@@ -3,10 +3,10 @@ package com.github.elenamikhailova.automation.api.client;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.given;
-
-import org.slf4j.*;
 
 
 public class ProductsApiClient {
@@ -32,14 +32,13 @@ public class ProductsApiClient {
     }
 
     @Step("Search product")
-    public Response searchProduct(String product) {
+    public Response searchProduct(String searchTerm) {
         log.info("Searching product via {}", SEARCH_PRODUCT);
         return given()
                 .spec(requestSpecification)
-                .formParam("search_product", product)
+                .formParam("search_product", searchTerm)
                 .when()
                 .post(SEARCH_PRODUCT);
     }
-
 }
 

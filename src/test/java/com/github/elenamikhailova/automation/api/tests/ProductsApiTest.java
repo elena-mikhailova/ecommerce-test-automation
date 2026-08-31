@@ -33,7 +33,7 @@ public class ProductsApiTest extends BaseApiTest {
 
     @ParameterizedTest(name = "Search term: {0}")
     @DisplayName("POST /searchProduct returns matching products")
-    @MethodSource("com.github.elenamikhailova.automation.api.data.ProductData#searchTerms")
+    @MethodSource("com.github.elenamikhailova.automation.data.ProductData#searchTerms")
     void canSearchProducts(String searchTerm) {
         Response response = productsApiClient.searchProduct(searchTerm);
         response.then()
