@@ -1,9 +1,9 @@
 package com.github.elenamikhailova.automation.api.tests;
 
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
-import com.github.elenamikhailova.automation.api.data.UserData;
 import com.github.elenamikhailova.automation.api.model.CreateUserRequest;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
+import com.github.elenamikhailova.automation.data.UserData;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 
 public class UserApiTest extends BaseApiTest {
     private UserApiClient userApiClient;
@@ -58,6 +58,7 @@ public class UserApiTest extends BaseApiTest {
                 .statusCode(200)
                 .body("responseCode", equalTo(200))
                 .body("message", equalTo("Account deleted!"));
+        // Prevent @AfterEach from deleting the same account again
         user = null;
     }
 
@@ -75,7 +76,7 @@ public class UserApiTest extends BaseApiTest {
 
     @ParameterizedTest(name = "{0}")
     @DisplayName("POST /verifyLogin rejects invalid credentials")
-    @MethodSource("com.github.elenamikhailova.automation.api.data.UserData#invalidLoginCases")
+    @MethodSource("com.github.elenamikhailova.automation.data.UserData#invalidLoginCases")
     void rejectsInvalidCredentials(String caseName,
                                    CreateUserRequest testUser,
                                    String email,

@@ -1,4 +1,4 @@
-package com.github.elenamikhailova.automation.api.data;
+package com.github.elenamikhailova.automation.data;
 
 import com.github.elenamikhailova.automation.api.model.CreateUserRequest;
 import net.datafaker.Faker;
@@ -12,7 +12,8 @@ public class UserData {
     public CreateUserRequest generateRandomUser() {
         return CreateUserRequest.builder()
                 .name(faker.name().firstName())
-                .email("User_" + System.currentTimeMillis() + "@test.com")
+                .email("User_" + System.currentTimeMillis()
+                        + "_" + faker.number().digits(5) + "@test.com")
                 .password(faker.credentials().password())
                 .title(faker.options().option("Mr", "Mrs", "Miss"))
                 .birthDate(String.valueOf(faker.number().numberBetween(1, 29)))
@@ -74,7 +75,7 @@ public class UserData {
                         "User not found!"
                 ),
                 Arguments.of(
-                        "Without email",
+                        "Missing email",
                         user5,
                         null,
                         user5.getPassword(),
@@ -82,14 +83,13 @@ public class UserData {
                         "Bad request, email or password parameter is missing in POST request."
                 ),
                 Arguments.of(
-                        "Without password",
+                        "Missing password",
                         user6,
                         user6.getEmail(),
                         null,
                         400,
                         "Bad request, email or password parameter is missing in POST request."
                 )
-
         );
     }
 

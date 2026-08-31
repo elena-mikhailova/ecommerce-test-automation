@@ -1,12 +1,14 @@
 package com.github.elenamikhailova.automation.config;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public final class TestConfig {
 
     private static final Properties PROPERTIES = new Properties();
 
+    // Load test configuration once and fail fast if it is unavailable
     static {
         try (InputStream input = TestConfig.class.getClassLoader()
                 .getResourceAsStream("config.properties")) {

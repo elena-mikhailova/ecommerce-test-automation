@@ -9,7 +9,6 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class CartPage {
-    private static final String VIEW_CART_PATH = "/view_cart";
 
     @Getter
     private final ElementsCollection productNames =

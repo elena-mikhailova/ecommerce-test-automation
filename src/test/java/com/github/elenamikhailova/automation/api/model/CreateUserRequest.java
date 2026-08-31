@@ -1,8 +1,7 @@
 package com.github.elenamikhailova.automation.api.model;
 
-import lombok.*;
-
-import java.util.List;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder(toBuilder = true)

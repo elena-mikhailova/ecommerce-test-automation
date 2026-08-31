@@ -4,7 +4,8 @@ import com.github.elenamikhailova.automation.api.model.CreateUserRequest;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.given;
 
@@ -75,6 +76,7 @@ public class UserApiClient {
         log.info("Verifying user login via {}", VERIFY_LOGIN);
         RequestSpecification request = given()
                 .spec(requestSpecification);
+        // null means the parameter should be omitted from the request
         if (email != null) {
             request.formParam("email", email);
         }
