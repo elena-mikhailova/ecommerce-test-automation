@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.hamcrest.Matchers.*;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class ProductsApiTest extends BaseApiTest {
@@ -25,10 +27,14 @@ public class ProductsApiTest extends BaseApiTest {
     void canGetAllProducts() {
         Response response = productsApiClient.getAllProducts();
         response.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(200))
-                .body("products", notNullValue())
-                .body("products", not(empty()));
+                .statusCode(200);
+        int responseCode = response.jsonPath().getInt("responseCode");
+        List<Object> products = response.jsonPath().getList("products");
+        assertThat(responseCode)
+                .isEqualTo(200);
+        assertThat(products)
+                .isNotNull()
+                .isNotEmpty();
     }
 
     @ParameterizedTest(name = "Search term: {0}")
@@ -37,10 +43,15 @@ public class ProductsApiTest extends BaseApiTest {
     void canSearchProducts(String searchTerm) {
         Response response = productsApiClient.searchProduct(searchTerm);
         response.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(200))
-                .body("products", not(empty()))
-                .body("products.name", hasItem(containsStringIgnoringCase(searchTerm)));
-
+                .statusCode(200);
+        int responseCode = response.jsonPath().getInt("responseCode");
+        List<Object> products = response.jsonPath().getList("products");
+        List<String> productNames = response.jsonPath().getList("products.name");
+        assertThat(responseCode)
+                .isEqualTo(200);
+        assertThat(products)
+                .isNotEmpty();
+        assertThat(productNames)
+                .anySatisfy(name -> assertThat(name).containsIgnoringCase(searchTerm));
     }
 }

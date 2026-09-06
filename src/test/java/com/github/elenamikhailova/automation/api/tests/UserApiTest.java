@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserApiTest extends BaseApiTest {
     private UserApiClient userApiClient;
@@ -31,9 +31,15 @@ public class UserApiTest extends BaseApiTest {
         user = userData.generateRandomUser();
         Response response = userApiClient.createUser(user);
         response.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(201))
-                .body("message", equalTo("User created!"));
+                .statusCode(200);
+
+        int responseCode = response.jsonPath().getInt("responseCode");
+        String message = response.jsonPath().getString("message");
+        assertThat(responseCode)
+                .isEqualTo(201);
+        assertThat(message)
+                .isEqualTo("User created!");
+
     }
 
     @Test
@@ -43,9 +49,14 @@ public class UserApiTest extends BaseApiTest {
         userApiClient.createUser(user);
         Response getUserResponse = userApiClient.getUserByEmail(user.getEmail());
         getUserResponse.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(200))
-                .body("user.email", equalTo(user.getEmail()));
+                .statusCode(200);
+
+        int responseCode = getUserResponse.jsonPath().getInt("responseCode");
+        String email = getUserResponse.jsonPath().getString("user.email");
+        assertThat(responseCode)
+                .isEqualTo(200);
+        assertThat(email)
+                .isEqualTo(user.getEmail());
     }
 
     @Test
@@ -55,9 +66,14 @@ public class UserApiTest extends BaseApiTest {
         userApiClient.createUser(user);
         Response deleteResponse = userApiClient.deleteUserAccount(user.getEmail(), user.getPassword());
         deleteResponse.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(200))
-                .body("message", equalTo("Account deleted!"));
+                .statusCode(200);
+
+        int responseCode = deleteResponse.jsonPath().getInt("responseCode");
+        String message = deleteResponse.jsonPath().getString("message");
+        assertThat(responseCode)
+                .isEqualTo(200);
+        assertThat(message)
+                .isEqualTo("Account deleted!");
         // Prevent @AfterEach from deleting the same account again
         user = null;
     }
@@ -69,9 +85,13 @@ public class UserApiTest extends BaseApiTest {
         userApiClient.createUser(user);
         Response response = userApiClient.verifyLogin(user.getEmail(), user.getPassword());
         response.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(200))
-                .body("message", equalTo("User exists!"));
+                .statusCode(200);
+        int responseCode = response.jsonPath().getInt("responseCode");
+        String message = response.jsonPath().getString("message");
+        assertThat(responseCode)
+                .isEqualTo(200);
+        assertThat(message)
+                .isEqualTo("User exists!");
     }
 
     @ParameterizedTest(name = "{0}")
@@ -87,9 +107,13 @@ public class UserApiTest extends BaseApiTest {
         userApiClient.createUser(user);
         Response response = userApiClient.verifyLogin(email, password);
         response.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(expectedResponseCode))
-                .body("message", equalTo(expectedMessage));
+                .statusCode(200);
+        int responseCode = response.jsonPath().getInt("responseCode");
+        String message = response.jsonPath().getString("message");
+        assertThat(responseCode)
+                .isEqualTo(expectedResponseCode);
+        assertThat(message)
+                .isEqualTo(expectedMessage);
     }
 
     @Test
@@ -103,13 +127,19 @@ public class UserApiTest extends BaseApiTest {
                 .build();
         Response updatedResponse = userApiClient.updateAccount(updatedUser);
         updatedResponse.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(200))
-                .body("message", equalTo("User updated!"));
+                .statusCode(200);
+        int responseCode = updatedResponse.jsonPath().getInt("responseCode");
+        String message = updatedResponse.jsonPath().getString("message");
+        assertThat(responseCode)
+                .isEqualTo(200);
+        assertThat(message)
+                .isEqualTo("User updated!");
         Response getUserResponse = userApiClient.getUserByEmail(user.getEmail());
         getUserResponse.then()
-                .statusCode(200)
-                .body("user.first_name", equalTo(updatedFirstName));
+                .statusCode(200);
+        String firstName = getUserResponse.jsonPath().getString("user.first_name");
+        assertThat(firstName)
+                .isEqualTo(updatedFirstName);
     }
 
 
