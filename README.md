@@ -1,18 +1,18 @@
 # E-commerce Test Automation
 
-[![Tests](https://github.com/elena-mikhailova/ecommerce-test-automation/actions/workflows/tests.yml/badge.svg?branch=main)]
-(https://github.com/elena-mikhailova/ecommerce-test-automation/actions/workflows/tests.yml)
+[![Tests](https://github.com/elena-mikhailova/ecommerce-test-automation/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/elena-mikhailova/ecommerce-test-automation/actions/workflows/tests.yml)
 
 Test automation project for [Automation Exercise](https://automationexercise.com/).
 
-The project contains API and UI automated tests for basic e-commerce scenarios.
+The project contains API and UI automated tests for common e-commerce scenarios.
 
 ## Tech Stack
 
 - Java 25
 - Maven
 - JUnit 5
-- RestAssured
+- REST Assured
+- AssertJ
 - Selenide
 - Allure
 - Datafaker
@@ -31,7 +31,7 @@ The project contains API and UI automated tests for basic e-commerce scenarios.
 - Update user
 - Delete user
 - Login with valid credentials
-- Login with invalid, empty and missing credentials
+- Login with invalid, empty, and missing credentials
 - Parameterized test scenarios
 
 ### UI
@@ -48,10 +48,16 @@ Cart tests use an available product instead of depending on a hardcoded product 
 
 ## Run Tests
 
-Run all tests:
+Run all tests in Chrome:
 
 ```bash
 ./mvnw clean test
+```
+
+Run tests in Firefox:
+
+```bash
+./mvnw clean test -Dselenide.browser=firefox
 ```
 
 Run tests in headless mode:
@@ -61,12 +67,6 @@ Run tests in headless mode:
 ```
 
 ## Allure Report
-
-Test results are generated in:
-
-```text
-target/allure-results
-```
 
 If Allure CLI is installed:
 
@@ -81,6 +81,8 @@ Application URLs are stored in:
 ```text
 src/test/resources/config.properties
 ```
+
+Chrome is used as the default browser. Firefox can be selected using the `selenide.browser` system property.
 
 ## CI
 
