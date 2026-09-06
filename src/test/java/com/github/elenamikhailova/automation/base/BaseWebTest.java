@@ -16,7 +16,7 @@ public abstract class BaseWebTest {
         Configuration.baseUrl = TestConfig.getUiBaseUrl();
         // The demo site may wait too long for third-party resources
         Configuration.pageLoadStrategy = "eager";
-        Configuration.browser = "chrome";
+        Configuration.browser = System.getProperty("selenide.browser", "chrome");
         Configuration.browserSize = "1920x1080";
         Configuration.timeout = 8000;
 
