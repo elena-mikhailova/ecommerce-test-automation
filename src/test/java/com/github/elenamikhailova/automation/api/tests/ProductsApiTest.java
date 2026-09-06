@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
 
 
 public class ProductsApiTest extends BaseApiTest {
@@ -44,10 +43,7 @@ public class ProductsApiTest extends BaseApiTest {
     void canSearchProducts(String searchTerm) {
         Response response = productsApiClient.searchProduct(searchTerm);
         response.then()
-                .statusCode(200)
-                .body("responseCode", equalTo(200))
-                .body("products", not(empty()))
-                .body("products.name", hasItem(containsStringIgnoringCase(searchTerm)));
+                .statusCode(200);
         int responseCode = response.jsonPath().getInt("responseCode");
         List<Object> products = response.jsonPath().getList("products");
         List<String> productNames = response.jsonPath().getList("products.name");
