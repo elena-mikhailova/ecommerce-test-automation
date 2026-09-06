@@ -2,6 +2,7 @@ package com.github.elenamikhailova.automation.ui.pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.github.elenamikhailova.automation.ui.components.ConsentPopup;
 import io.qameta.allure.Step;
 import lombok.Getter;
 
@@ -9,6 +10,8 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class ProductsPage {
     private static final String PRODUCTS_PATH = "/products";
+
+    private final ConsentPopup consentPopup = new ConsentPopup();
 
     private final SelenideElement searchInput =
             $("[placeholder='Search Product']");
@@ -39,6 +42,7 @@ public class ProductsPage {
     @Step("Open products page")
     public void openPage() {
         open(PRODUCTS_PATH);
+        consentPopup.acceptIfVisible();
     }
 
     @Step("Click view cart link")
