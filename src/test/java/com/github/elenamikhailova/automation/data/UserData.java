@@ -1,6 +1,6 @@
 package com.github.elenamikhailova.automation.data;
 
-import com.github.elenamikhailova.automation.api.model.CreateUserRequest;
+import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
 import net.datafaker.Faker;
 import org.junit.jupiter.params.provider.Arguments;
 

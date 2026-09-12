@@ -1,7 +1,7 @@
-package com.github.elenamikhailova.automation.api.tests;
+package com.github.elenamikhailova.automation.tests.api;
 
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
-import com.github.elenamikhailova.automation.api.model.CreateUserRequest;
+import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import com.github.elenamikhailova.automation.data.UserData;
 import io.restassured.response.Response;

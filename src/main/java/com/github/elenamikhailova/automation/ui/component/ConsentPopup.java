@@ -1,4 +1,4 @@
-package com.github.elenamikhailova.automation.ui.components;
+package com.github.elenamikhailova.automation.ui.component;
 
 import com.codeborne.selenide.SelenideElement;
 
