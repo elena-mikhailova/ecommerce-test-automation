@@ -1,6 +1,7 @@
 package com.github.elenamikhailova.automation.tests.api;
 
 import com.github.elenamikhailova.automation.api.client.ProductsApiClient;
+import com.github.elenamikhailova.automation.api.model.response.ProductResponse;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,8 @@ public class ProductsApiTest extends BaseApiTest {
         response.then()
                 .statusCode(200);
         int responseCode = response.jsonPath().getInt("responseCode");
-        List<Object> products = response.jsonPath().getList("products");
+        List<ProductResponse> products =
+                response.jsonPath().getList("products", ProductResponse.class);
         assertThat(responseCode)
                 .isEqualTo(200);
         assertThat(products)
@@ -45,13 +47,15 @@ public class ProductsApiTest extends BaseApiTest {
         response.then()
                 .statusCode(200);
         int responseCode = response.jsonPath().getInt("responseCode");
-        List<Object> products = response.jsonPath().getList("products");
-        List<String> productNames = response.jsonPath().getList("products.name");
+        List<ProductResponse> products =
+                response.jsonPath().getList("products", ProductResponse.class);
         assertThat(responseCode)
                 .isEqualTo(200);
         assertThat(products)
                 .isNotEmpty();
-        assertThat(productNames)
-                .anySatisfy(name -> assertThat(name).containsIgnoringCase(searchTerm));
+        assertThat(products)
+                .extracting(ProductResponse::getName)
+                .anySatisfy(name ->
+                        assertThat(name).containsIgnoringCase(searchTerm));
     }
 }
