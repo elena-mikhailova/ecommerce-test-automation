@@ -54,9 +54,9 @@ public class UserApiTest extends BaseApiTest {
 
         UserDetailsResponse body =
                 getUserResponse.as(UserDetailsResponse.class);
-        assertThat(body.getResponseCode())
+        assertThat(body.responseCode())
                 .isEqualTo(200);
-        assertThat(body.getUser().getEmail())
+        assertThat(body.user().email())
                 .isEqualTo(user.getEmail());
     }
 
@@ -140,9 +140,9 @@ public class UserApiTest extends BaseApiTest {
                 .statusCode(200);
         UserDetailsResponse body =
                 getUserResponse.as(UserDetailsResponse.class);
-        assertThat(body.getUser().getFirstName())
+        assertThat(body.user().firstName())
                 .isEqualTo(updatedFirstName);
-        assertThat(body.getResponseCode())
+        assertThat(body.responseCode())
                 .isEqualTo(200);
     }
 
