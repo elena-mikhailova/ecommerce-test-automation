@@ -29,9 +29,9 @@ public class ProductsApiTest extends BaseApiTest {
         response.then()
                 .statusCode(200);
         ProductsResponse body = response.as(ProductsResponse.class);
-        assertThat(body.getResponseCode())
+        assertThat(body.responseCode())
                 .isEqualTo(200);
-        assertThat(body.getProducts())
+        assertThat(body.products())
                 .isNotNull()
                 .isNotEmpty();
     }
@@ -44,13 +44,13 @@ public class ProductsApiTest extends BaseApiTest {
         response.then()
                 .statusCode(200);
         ProductsResponse body = response.as(ProductsResponse.class);
-        assertThat(body.getResponseCode())
+        assertThat(body.responseCode())
                 .isEqualTo(200);
-        assertThat(body.getProducts())
+        assertThat(body.products())
                 .isNotNull()
                 .isNotEmpty();
-        assertThat(body.getProducts())
-                .extracting(ProductResponse::getName)
+        assertThat(body.products())
+                .extracting(ProductResponse::name)
                 .anySatisfy(name ->
                         assertThat(name).containsIgnoringCase(searchTerm));
     }
