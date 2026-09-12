@@ -2,6 +2,7 @@ package com.github.elenamikhailova.automation.tests.api;
 
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
 import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
+import com.github.elenamikhailova.automation.api.model.response.UserDetailsResponse;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import com.github.elenamikhailova.automation.data.UserData;
 import io.restassured.response.Response;
@@ -51,11 +52,11 @@ public class UserApiTest extends BaseApiTest {
         getUserResponse.then()
                 .statusCode(200);
 
-        int responseCode = getUserResponse.jsonPath().getInt("responseCode");
-        String email = getUserResponse.jsonPath().getString("user.email");
-        assertThat(responseCode)
+        UserDetailsResponse body =
+                getUserResponse.as(UserDetailsResponse.class);
+        assertThat(body.getResponseCode())
                 .isEqualTo(200);
-        assertThat(email)
+        assertThat(body.getUser().getEmail())
                 .isEqualTo(user.getEmail());
     }
 
@@ -137,8 +138,9 @@ public class UserApiTest extends BaseApiTest {
         Response getUserResponse = userApiClient.getUserByEmail(user.getEmail());
         getUserResponse.then()
                 .statusCode(200);
-        String firstName = getUserResponse.jsonPath().getString("user.first_name");
-        assertThat(firstName)
+        UserDetailsResponse body =
+                getUserResponse.as(UserDetailsResponse.class);
+        assertThat(body.getUser().getFirstName())
                 .isEqualTo(updatedFirstName);
     }
 
