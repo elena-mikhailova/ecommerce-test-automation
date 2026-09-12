@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.platform.version>1.14.3</junit.platform.version>
         <aspectj.version>1.9.25.1</aspectj.version>
-
+        <jackson.version>2.22.2</jackson.version>
         <commons-codec.version>1.22.1</commons-codec.version>
         <junit.version>5.14.3</junit.version>
         <assertj.version>3.27.7</assertj.version>
@@ -136,6 +136,12 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-selenide</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
     </dependencies>

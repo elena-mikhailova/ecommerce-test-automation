@@ -1,6 +1,8 @@
 package com.github.elenamikhailova.automation.tests.api;
 
 import com.github.elenamikhailova.automation.api.client.ProductsApiClient;
+import com.github.elenamikhailova.automation.api.model.response.ProductResponse;
+import com.github.elenamikhailova.automation.api.model.response.ProductsResponse;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,8 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,11 +28,10 @@ public class ProductsApiTest extends BaseApiTest {
         Response response = productsApiClient.getAllProducts();
         response.then()
                 .statusCode(200);
-        int responseCode = response.jsonPath().getInt("responseCode");
-        List<Object> products = response.jsonPath().getList("products");
-        assertThat(responseCode)
+        ProductsResponse body = response.as(ProductsResponse.class);
+        assertThat(body.getResponseCode())
                 .isEqualTo(200);
-        assertThat(products)
+        assertThat(body.getProducts())
                 .isNotNull()
                 .isNotEmpty();
     }
@@ -44,14 +43,15 @@ public class ProductsApiTest extends BaseApiTest {
         Response response = productsApiClient.searchProduct(searchTerm);
         response.then()
                 .statusCode(200);
-        int responseCode = response.jsonPath().getInt("responseCode");
-        List<Object> products = response.jsonPath().getList("products");
-        List<String> productNames = response.jsonPath().getList("products.name");
-        assertThat(responseCode)
+        ProductsResponse body = response.as(ProductsResponse.class);
+        assertThat(body.getResponseCode())
                 .isEqualTo(200);
-        assertThat(products)
+        assertThat(body.getProducts())
+                .isNotNull()
                 .isNotEmpty();
-        assertThat(productNames)
-                .anySatisfy(name -> assertThat(name).containsIgnoringCase(searchTerm));
+        assertThat(body.getProducts())
+                .extracting(ProductResponse::getName)
+                .anySatisfy(name ->
+                        assertThat(name).containsIgnoringCase(searchTerm));
     }
 }
