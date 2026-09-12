@@ -142,6 +142,8 @@ public class UserApiTest extends BaseApiTest {
                 getUserResponse.as(UserDetailsResponse.class);
         assertThat(body.getUser().getFirstName())
                 .isEqualTo(updatedFirstName);
+        assertThat(body.getResponseCode())
+                .isEqualTo(200);
     }
 
 
