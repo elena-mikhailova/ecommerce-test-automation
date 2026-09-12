@@ -1,12 +1,12 @@
-package com.github.elenamikhailova.automation.ui.tests;
+package com.github.elenamikhailova.automation.tests.ui;
 
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
-import com.github.elenamikhailova.automation.api.model.CreateUserRequest;
+import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
 import com.github.elenamikhailova.automation.base.BaseWebTest;
 import com.github.elenamikhailova.automation.config.RequestSpecFactory;
 import com.github.elenamikhailova.automation.data.UserData;
-import com.github.elenamikhailova.automation.ui.components.Header;
-import com.github.elenamikhailova.automation.ui.pages.LoginPage;
+import com.github.elenamikhailova.automation.ui.component.Header;
+import com.github.elenamikhailova.automation.ui.page.LoginPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

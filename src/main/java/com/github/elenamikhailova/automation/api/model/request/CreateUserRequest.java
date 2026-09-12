@@ -1,4 +1,4 @@
-package com.github.elenamikhailova.automation.api.model;
+package com.github.elenamikhailova.automation.api.model.request;
 
 import lombok.Builder;
 import lombok.Getter;

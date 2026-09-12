@@ -1,8 +1,8 @@
-package com.github.elenamikhailova.automation.ui.pages;
+package com.github.elenamikhailova.automation.ui.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.github.elenamikhailova.automation.ui.components.ConsentPopup;
+import com.github.elenamikhailova.automation.ui.component.ConsentPopup;
 import io.qameta.allure.Step;
 import lombok.Getter;
 

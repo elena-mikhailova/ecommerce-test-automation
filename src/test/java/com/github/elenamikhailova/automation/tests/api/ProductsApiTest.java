@@ -1,4 +1,4 @@
-package com.github.elenamikhailova.automation.api.tests;
+package com.github.elenamikhailova.automation.tests.api;
 
 import com.github.elenamikhailova.automation.api.client.ProductsApiClient;
 import com.github.elenamikhailova.automation.base.BaseApiTest;

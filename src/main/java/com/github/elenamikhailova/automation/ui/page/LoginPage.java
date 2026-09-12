@@ -1,4 +1,4 @@
-package com.github.elenamikhailova.automation.ui.pages;
+package com.github.elenamikhailova.automation.ui.page;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;

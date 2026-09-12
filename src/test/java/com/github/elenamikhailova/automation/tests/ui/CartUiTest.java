@@ -1,8 +1,8 @@
-package com.github.elenamikhailova.automation.ui.tests;
+package com.github.elenamikhailova.automation.tests.ui;
 
 import com.github.elenamikhailova.automation.base.BaseWebTest;
-import com.github.elenamikhailova.automation.ui.pages.CartPage;
-import com.github.elenamikhailova.automation.ui.pages.ProductsPage;
+import com.github.elenamikhailova.automation.ui.page.CartPage;
+import com.github.elenamikhailova.automation.ui.page.ProductsPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

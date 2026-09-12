@@ -1,6 +1,6 @@
 package com.github.elenamikhailova.automation.api.client;
 
-import com.github.elenamikhailova.automation.api.model.CreateUserRequest;
+import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
