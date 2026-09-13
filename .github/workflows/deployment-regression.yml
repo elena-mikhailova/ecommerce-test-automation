@@ -1,0 +1,23 @@
+name: Deployment Regression
+
+on:
+  workflow_dispatch:
+
+  workflow_call:
+
+  repository_dispatch:
+    types:
+      - deployment-completed
+
+jobs:
+  deployment-quality-gate:
+    name: Deployment Quality Gate
+
+    permissions:
+      contents: read
+      checks: write
+
+    uses: ./.github/workflows/reusable-test-run.yml
+    with:
+      groups: regression
+      exclude_quarantine: true

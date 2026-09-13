@@ -1,0 +1,98 @@
+name: Reusable Test Run
+
+on:
+  workflow_call:
+    inputs:
+      groups:
+        description: JUnit test group to run
+        required: true
+        type: string
+
+      exclude_quarantine:
+        description: Exclude quarantined tests
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  tests:
+    name: ${{ inputs.groups }} tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Run tests without quarantine
+        if: ${{ inputs.exclude_quarantine == true }}
+        run: >
+          ./mvnw clean test
+          -Dgroups=${{ inputs.groups }}
+          -DexcludedGroups=quarantine
+          -Dselenide.headless=true
+
+      - name: Run tests
+        if: ${{ inputs.exclude_quarantine == false }}
+        run: >
+          ./mvnw clean test
+          -Dgroups=${{ inputs.groups }}
+          -Dselenide.headless=true
+
+      - name: Publish JUnit test report
+        id: junit-report
+        if: success() || failure()
+        uses: step-security/action-junit-report@v6
+        with:
+          report_paths: '**/target/surefire-reports/TEST-*.xml'
+          check_name: '${{ inputs.groups }} Test Report'
+          detailed_summary: true
+          include_passed: false
+          fail_on_parse_error: true
+          require_tests: true
+
+      - name: Upload Surefire reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: surefire-reports-${{ inputs.groups }}
+          path: target/surefire-reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload UI failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ui-failure-artifacts-${{ inputs.groups }}
+          path: build/reports/tests/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-results-${{ inputs.groups }}
+          path: target/allure-results/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Generate Allure report
+        if: always()
+        run: ./mvnw allure:report
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-report-${{ inputs.groups }}
+          path: target/site/allure-maven-plugin/
+          if-no-files-found: warn
+          retention-days: 14

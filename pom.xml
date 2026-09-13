@@ -27,6 +27,8 @@
         <lombok.version>1.18.46</lombok.version>
         <datafaker.version>2.7.0</datafaker.version>
         <selenide.version>7.18.0</selenide.version>
+        <allure.maven.version>3.0.2</allure.maven.version>
+        <allure.report.version>2.39.0</allure.report.version>
 
         <maven.surefire.version>3.5.6</maven.surefire.version>
         <maven.compiler.version>3.15.0</maven.compiler.version>
@@ -147,6 +149,15 @@
 
     <build>
         <plugins>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure.maven.version}</version>
+                <configuration>
+                    <reportVersion>${allure.report.version}</reportVersion>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
