@@ -98,7 +98,9 @@ public class UserApiTest extends BaseApiTest {
 
     @ParameterizedTest(name = "{0}")
     @DisplayName("POST /verifyLogin rejects invalid credentials")
-    @MethodSource("com.github.elenamikhailova.automation.data.UserData#invalidLoginCases")
+    @MethodSource(
+            "com.github.elenamikhailova.automation.data.provider.InvalidLoginDataProvider#invalidLoginCases"
+    )
     void rejectsInvalidCredentials(String caseName,
                                    CreateUserRequest testUser,
                                    String email,
