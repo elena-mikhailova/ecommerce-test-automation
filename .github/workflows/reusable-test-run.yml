@@ -14,6 +14,12 @@ on:
         default: true
         type: boolean
 
+      allow_failure:
+        description: Allow test failures without failing the job
+        required: false
+        default: false
+        type: boolean
+
 jobs:
   tests:
     name: ${{ inputs.groups }} tests
@@ -32,6 +38,7 @@ jobs:
 
       - name: Run tests without quarantine
         if: ${{ inputs.exclude_quarantine == true }}
+        continue-on-error: ${{ inputs.allow_failure }}
         run: >
           ./mvnw clean test
           -Dgroups=${{ inputs.groups }}
@@ -40,6 +47,7 @@ jobs:
 
       - name: Run tests
         if: ${{ inputs.exclude_quarantine == false }}
+        continue-on-error: ${{ inputs.allow_failure }}
         run: >
           ./mvnw clean test
           -Dgroups=${{ inputs.groups }}
@@ -67,7 +75,7 @@ jobs:
           retention-days: 14
 
       - name: Upload UI failure artifacts
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: ui-failure-artifacts-${{ inputs.groups }}
