@@ -20,6 +20,16 @@ on:
         default: false
         type: boolean
 
+      notify_slack:
+        description: Send test results to Slack
+        required: false
+        default: false
+        type: boolean
+
+    secrets:
+      slack_webhook_url:
+        description: Slack incoming webhook URL
+        required: false
 jobs:
   tests:
     name: ${{ inputs.groups }} tests
@@ -56,6 +66,7 @@ jobs:
       - name: Publish JUnit test report
         id: junit-report
         if: success() || failure()
+        continue-on-error: ${{ inputs.allow_failure }}
         uses: step-security/action-junit-report@v6
         with:
           report_paths: '**/target/surefire-reports/TEST-*.xml'
@@ -104,3 +115,38 @@ jobs:
           path: target/site/allure-maven-plugin/
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Notify Slack
+        if: ${{ always() && inputs.notify_slack }}
+        uses: slackapi/slack-github-action@v4.0.0
+        with:
+          webhook: ${{ secrets.slack_webhook_url }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "${{ steps.junit-report.outputs.failed != '0' && '❌' || '✅' }} ${{ inputs.groups }} tests: ${{ steps.junit-report.outputs.failed != '0' && 'FAILED' || 'PASSED' }}"
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "*${{ inputs.groups }} tests* — ${{ steps.junit-report.outputs.failed != '0' && '❌ FAILED' || '✅ PASSED' }}"
+              - type: "section"
+                fields:
+                  - type: "mrkdwn"
+                    text: "*Passed:*\n${{ steps.junit-report.outputs.passed }}"
+                  - type: "mrkdwn"
+                    text: "*Failed:*\n${{ steps.junit-report.outputs.failed }}"
+                  - type: "mrkdwn"
+                    text: "*Skipped:*\n${{ steps.junit-report.outputs.skipped }}"
+                  - type: "mrkdwn"
+                    text: "*Total:*\n${{ steps.junit-report.outputs.total }}"
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Non-blocking:* ${{ inputs.allow_failure }}"
+              - type: "actions"
+                elements:
+                  - type: "button"
+                    text:
+                      type: "plain_text"
+                      text: "Open GitHub Actions"
+                    url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
