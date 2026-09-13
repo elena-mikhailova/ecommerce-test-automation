@@ -1,0 +1,37 @@
+name: Test Framework CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+jobs:
+  pull-request-smoke:
+    name: Pull Request Smoke
+    if: github.event_name == 'pull_request'
+
+    permissions:
+      contents: read
+      checks: write
+
+    uses: ./.github/workflows/reusable-test-run.yml
+    with:
+      groups: smoke
+      exclude_quarantine: true
+
+  main-regression:
+    name: Main Regression
+    if: github.event_name == 'push'
+
+    permissions:
+      contents: read
+      checks: write
+
+    uses: ./.github/workflows/reusable-test-run.yml
+    with:
+      groups: regression
+      exclude_quarantine: true
