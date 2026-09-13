@@ -2,6 +2,8 @@ package com.github.elenamikhailova.automation.base;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import com.github.elenamikhailova.automation.annotation.FullRegression;
+import com.github.elenamikhailova.automation.annotation.Ui;
 import com.github.elenamikhailova.automation.config.TestConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
@@ -9,6 +11,8 @@ import org.junit.jupiter.api.BeforeAll;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
+@Ui
+@FullRegression
 public abstract class BaseWebTest {
 
     @BeforeAll

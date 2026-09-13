@@ -1,5 +1,7 @@
 package com.github.elenamikhailova.automation.tests.ui;
 
+import com.github.elenamikhailova.automation.annotation.Regression;
+import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
 import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
 import com.github.elenamikhailova.automation.base.BaseWebTest;
@@ -8,13 +10,14 @@ import com.github.elenamikhailova.automation.data.factory.UserFactory;
 import com.github.elenamikhailova.automation.ui.component.Header;
 import com.github.elenamikhailova.automation.ui.page.LoginPage;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Tag("ui")
-@Tag("regression")
 public class LoginUiTest extends BaseWebTest {
     private final LoginPage loginPage = new LoginPage();
     private final Header header = new Header();
@@ -29,8 +32,8 @@ public class LoginUiTest extends BaseWebTest {
     }
 
     @Test
-    @Tag("smoke")
-    @Tag("critical")
+    @Smoke
+    @Regression
     @DisplayName("User can log in with valid credentials")
     void canLoginWithValidCredentials() {
         CreateUserRequest newUser = userFactory.validUser();
@@ -48,6 +51,7 @@ public class LoginUiTest extends BaseWebTest {
     }
 
     @Test
+    @Regression
     @DisplayName("User cannot log in with invalid credentials")
     void cannotLoginWithInvalidCredentials() {
         CreateUserRequest invalidUser = userFactory.validUser();
