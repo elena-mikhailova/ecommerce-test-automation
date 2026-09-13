@@ -42,8 +42,8 @@ public class ProductsApiTest extends BaseApiTest {
     @ParameterizedTest(name = "Search term: {0}")
     @Regression
     @DisplayName("POST /searchProduct returns matching products")
-    @MethodSource("com.github.elenamikhailova.automation.data.ProductData#searchTerms")
-    void canSearchProducts(String searchTerm) {
+    @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#validSearchCases")
+    void canSearchProducts(String caseName, String searchTerm) {
         Response response = productsApiClient.searchProduct(searchTerm);
         response.then()
                 .statusCode(200);

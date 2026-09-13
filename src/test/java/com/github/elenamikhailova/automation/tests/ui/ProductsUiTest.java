@@ -8,8 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static com.codeborne.selenide.CollectionCondition.anyMatch;
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.CollectionCondition.*;
 
 public class ProductsUiTest extends BaseWebTest {
 
@@ -19,17 +18,32 @@ public class ProductsUiTest extends BaseWebTest {
     @Smoke
     @Regression
     @DisplayName("User can search products")
-    @MethodSource("com.github.elenamikhailova.automation.data.ProductData#searchTerms")
-    void canSearchProducts(String searchTerm) {
-        String lowerCaseSearchTerm = searchTerm.toLowerCase();
+    @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#validSearchCases")
+    void canSearchProducts(String caseName, String searchTerm) {
         productsPage.openPage();
         productsPage.searchProduct(searchTerm);
+
         productsPage.getProductNames()
                 .shouldHave(sizeGreaterThan(0));
+
         productsPage.getProductNames().shouldHave(anyMatch(
                         "at least one product name contains search term",
-                        element -> element.getText().toLowerCase().contains(lowerCaseSearchTerm)
+                        element -> element.getText().toLowerCase().contains(searchTerm.toLowerCase())
                 )
         );
+    }
+
+    @ParameterizedTest(name = "Search term: {0}")
+    @Smoke
+    @Regression
+    @DisplayName("Search returns no products for nonexistent value")
+    @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#inValidSearchCases")
+    void returnNoProductsForInvalidSearch(String caseName, String searchTerm) {
+        productsPage.openPage();
+        productsPage.searchProduct(searchTerm);
+
+        productsPage.getProductNames()
+                .shouldHave(size(0));
+
     }
 }
