@@ -4,7 +4,7 @@ import com.github.elenamikhailova.automation.api.client.UserApiClient;
 import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
 import com.github.elenamikhailova.automation.api.model.response.UserDetailsResponse;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
-import com.github.elenamikhailova.automation.data.UserData;
+import com.github.elenamikhailova.automation.data.factory.UserFactory;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserApiTest extends BaseApiTest {
     private UserApiClient userApiClient;
     private CreateUserRequest user;
-    private final UserData userData = new UserData();
+    private final UserFactory userFactory = new UserFactory();
+
 
 
     @BeforeEach
@@ -29,7 +30,7 @@ public class UserApiTest extends BaseApiTest {
     @Test
     @DisplayName("POST /createAccount creates a new user")
     void canCreateUser() {
-        user = userData.generateRandomUser();
+        user = userFactory.validUser();
         Response response = userApiClient.createUser(user);
         response.then()
                 .statusCode(200);
@@ -46,7 +47,7 @@ public class UserApiTest extends BaseApiTest {
     @Test
     @DisplayName("GET /getUserDetailByEmail returns user details")
     void canGetUserByEmail() {
-        user = userData.generateRandomUser();
+        user = userFactory.validUser();
         userApiClient.createUser(user);
         Response getUserResponse = userApiClient.getUserByEmail(user.getEmail());
         getUserResponse.then()
@@ -63,7 +64,7 @@ public class UserApiTest extends BaseApiTest {
     @Test
     @DisplayName("DELETE /deleteAccount deletes user")
     void canDeleteUser() {
-        user = userData.generateRandomUser();
+        user = userFactory.validUser();
         userApiClient.createUser(user);
         Response deleteResponse = userApiClient.deleteUserAccount(user.getEmail(), user.getPassword());
         deleteResponse.then()
@@ -82,7 +83,7 @@ public class UserApiTest extends BaseApiTest {
     @Test
     @DisplayName("POST /verifyLogin accepts valid credentials")
     void shouldVerifyLoginWithValidCredentials() {
-        user = userData.generateRandomUser();
+        user = userFactory.validUser();
         userApiClient.createUser(user);
         Response response = userApiClient.verifyLogin(user.getEmail(), user.getPassword());
         response.then()
@@ -120,13 +121,11 @@ public class UserApiTest extends BaseApiTest {
     @Test
     @DisplayName("PUT /updateAccount updates the data of account")
     void canUpdateUser() {
-        user = userData.generateRandomUser();
+        user = userFactory.validUser();
         userApiClient.createUser(user);
-        String updatedFirstName = userData.generateFirstName();
-        CreateUserRequest updatedUser = user.toBuilder()
-                .firstName(updatedFirstName)
-                .build();
-        Response updatedResponse = userApiClient.updateAccount(updatedUser);
+        CreateUserRequest updatedUser = userFactory.withRandomFirstName(user);
+        Response updatedResponse =
+                userApiClient.updateAccount(updatedUser);
         updatedResponse.then()
                 .statusCode(200);
         int responseCode = updatedResponse.jsonPath().getInt("responseCode");
@@ -140,10 +139,10 @@ public class UserApiTest extends BaseApiTest {
                 .statusCode(200);
         UserDetailsResponse body =
                 getUserResponse.as(UserDetailsResponse.class);
-        assertThat(body.user().firstName())
-                .isEqualTo(updatedFirstName);
         assertThat(body.responseCode())
                 .isEqualTo(200);
+        assertThat(body.user().firstName())
+                .isEqualTo(updatedUser.getFirstName());
     }
 
 

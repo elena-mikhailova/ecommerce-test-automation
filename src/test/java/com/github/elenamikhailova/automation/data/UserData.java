@@ -94,6 +94,7 @@ public class UserData {
     }
 
     public String generateFirstName() {
+
         return faker.name().firstName();
     }
 }
