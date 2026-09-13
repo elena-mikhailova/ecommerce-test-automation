@@ -1,5 +1,7 @@
 package com.github.elenamikhailova.automation.tests.ui;
 
+import com.github.elenamikhailova.automation.annotation.Regression;
+import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
 import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
 import com.github.elenamikhailova.automation.base.BaseWebTest;
@@ -30,6 +32,8 @@ public class LoginUiTest extends BaseWebTest {
     }
 
     @Test
+    @Smoke
+    @Regression
     @DisplayName("User can log in with valid credentials")
     void canLoginWithValidCredentials() {
         CreateUserRequest newUser = userFactory.validUser();
@@ -47,6 +51,7 @@ public class LoginUiTest extends BaseWebTest {
     }
 
     @Test
+    @Regression
     @DisplayName("User cannot log in with invalid credentials")
     void cannotLoginWithInvalidCredentials() {
         CreateUserRequest invalidUser = userFactory.validUser();

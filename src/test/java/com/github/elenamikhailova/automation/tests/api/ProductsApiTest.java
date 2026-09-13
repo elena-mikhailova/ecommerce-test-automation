@@ -1,5 +1,7 @@
 package com.github.elenamikhailova.automation.tests.api;
 
+import com.github.elenamikhailova.automation.annotation.Regression;
+import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.api.client.ProductsApiClient;
 import com.github.elenamikhailova.automation.api.model.response.ProductResponse;
 import com.github.elenamikhailova.automation.api.model.response.ProductsResponse;
@@ -13,7 +15,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class ProductsApiTest extends BaseApiTest {
     private ProductsApiClient productsApiClient;
 
@@ -23,6 +24,8 @@ public class ProductsApiTest extends BaseApiTest {
     }
 
     @Test
+    @Regression
+    @Smoke
     @DisplayName("GET /productsList returns a non-empty product list")
     void canGetAllProducts() {
         Response response = productsApiClient.getAllProducts();
@@ -37,6 +40,7 @@ public class ProductsApiTest extends BaseApiTest {
     }
 
     @ParameterizedTest(name = "Search term: {0}")
+    @Regression
     @DisplayName("POST /searchProduct returns matching products")
     @MethodSource("com.github.elenamikhailova.automation.data.ProductData#searchTerms")
     void canSearchProducts(String searchTerm) {

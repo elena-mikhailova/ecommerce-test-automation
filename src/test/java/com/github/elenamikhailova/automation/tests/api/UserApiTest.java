@@ -1,5 +1,7 @@
 package com.github.elenamikhailova.automation.tests.api;
 
+import com.github.elenamikhailova.automation.annotation.Regression;
+import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
 import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
 import com.github.elenamikhailova.automation.api.model.response.UserDetailsResponse;
@@ -15,11 +17,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 public class UserApiTest extends BaseApiTest {
     private UserApiClient userApiClient;
     private CreateUserRequest user;
     private final UserFactory userFactory = new UserFactory();
-
 
 
     @BeforeEach
@@ -28,6 +30,8 @@ public class UserApiTest extends BaseApiTest {
     }
 
     @Test
+    @Smoke
+    @Regression
     @DisplayName("POST /createAccount creates a new user")
     void canCreateUser() {
         user = userFactory.validUser();
@@ -45,6 +49,7 @@ public class UserApiTest extends BaseApiTest {
     }
 
     @Test
+    @Regression
     @DisplayName("GET /getUserDetailByEmail returns user details")
     void canGetUserByEmail() {
         user = userFactory.validUser();
@@ -63,6 +68,7 @@ public class UserApiTest extends BaseApiTest {
 
     @Test
     @DisplayName("DELETE /deleteAccount deletes user")
+    @Regression
     void canDeleteUser() {
         user = userFactory.validUser();
         userApiClient.createUser(user);
@@ -81,6 +87,7 @@ public class UserApiTest extends BaseApiTest {
     }
 
     @Test
+    @Regression
     @DisplayName("POST /verifyLogin accepts valid credentials")
     void shouldVerifyLoginWithValidCredentials() {
         user = userFactory.validUser();

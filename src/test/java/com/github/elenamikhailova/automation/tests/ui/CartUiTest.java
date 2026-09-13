@@ -1,5 +1,7 @@
 package com.github.elenamikhailova.automation.tests.ui;
 
+import com.github.elenamikhailova.automation.annotation.Regression;
+import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.base.BaseWebTest;
 import com.github.elenamikhailova.automation.ui.page.CartPage;
 import com.github.elenamikhailova.automation.ui.page.ProductsPage;
@@ -14,6 +16,8 @@ public class CartUiTest extends BaseWebTest {
     private final CartPage cartPage = new CartPage();
 
     @Test
+    @Smoke
+    @Regression
     @DisplayName("User can add product to cart")
     void canAddProductToCart() {
         productsPage.openPage();
@@ -26,6 +30,7 @@ public class CartUiTest extends BaseWebTest {
 
     @Test
     @DisplayName("User can delete product from cart")
+    @Regression
     void canDeleteProductFromCart() {
         productsPage.openPage();
         String productName = productsPage.addFirstProductToCart();
