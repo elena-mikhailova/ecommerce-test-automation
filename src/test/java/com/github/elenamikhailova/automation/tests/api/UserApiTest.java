@@ -6,20 +6,18 @@ import com.github.elenamikhailova.automation.api.model.response.UserDetailsRespo
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import com.github.elenamikhailova.automation.data.factory.UserFactory;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("api")
+@Tag("regression")
 public class UserApiTest extends BaseApiTest {
     private UserApiClient userApiClient;
     private CreateUserRequest user;
     private final UserFactory userFactory = new UserFactory();
-
 
 
     @BeforeEach
@@ -28,6 +26,8 @@ public class UserApiTest extends BaseApiTest {
     }
 
     @Test
+    @Tag("smoke")
+    @Tag("critical")
     @DisplayName("POST /createAccount creates a new user")
     void canCreateUser() {
         user = userFactory.validUser();
@@ -81,6 +81,7 @@ public class UserApiTest extends BaseApiTest {
     }
 
     @Test
+    @Tag("critical")
     @DisplayName("POST /verifyLogin accepts valid credentials")
     void shouldVerifyLoginWithValidCredentials() {
         user = userFactory.validUser();

@@ -7,13 +7,15 @@ import com.github.elenamikhailova.automation.base.BaseApiTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+@Tag("api")
+@Tag("regression")
 public class ProductsApiTest extends BaseApiTest {
     private ProductsApiClient productsApiClient;
 
@@ -23,6 +25,7 @@ public class ProductsApiTest extends BaseApiTest {
     }
 
     @Test
+    @Tag("smoke")
     @DisplayName("GET /productsList returns a non-empty product list")
     void canGetAllProducts() {
         Response response = productsApiClient.getAllProducts();

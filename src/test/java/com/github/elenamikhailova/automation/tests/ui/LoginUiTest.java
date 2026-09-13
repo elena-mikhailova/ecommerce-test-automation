@@ -8,14 +8,13 @@ import com.github.elenamikhailova.automation.data.factory.UserFactory;
 import com.github.elenamikhailova.automation.ui.component.Header;
 import com.github.elenamikhailova.automation.ui.page.LoginPage;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static com.codeborne.selenide.Condition.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("ui")
+@Tag("regression")
 public class LoginUiTest extends BaseWebTest {
     private final LoginPage loginPage = new LoginPage();
     private final Header header = new Header();
@@ -30,6 +29,8 @@ public class LoginUiTest extends BaseWebTest {
     }
 
     @Test
+    @Tag("smoke")
+    @Tag("critical")
     @DisplayName("User can log in with valid credentials")
     void canLoginWithValidCredentials() {
         CreateUserRequest newUser = userFactory.validUser();

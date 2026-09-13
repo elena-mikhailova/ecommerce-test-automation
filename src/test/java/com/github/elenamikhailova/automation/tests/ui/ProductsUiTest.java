@@ -3,17 +3,22 @@ package com.github.elenamikhailova.automation.tests.ui;
 import com.github.elenamikhailova.automation.base.BaseWebTest;
 import com.github.elenamikhailova.automation.ui.page.ProductsPage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.codeborne.selenide.CollectionCondition.anyMatch;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 
+@Tag("ui")
+@Tag("regression")
 public class ProductsUiTest extends BaseWebTest {
 
     private final ProductsPage productsPage = new ProductsPage();
 
     @ParameterizedTest(name = "Search term: {0}")
+    @Tag("smoke")
+    @Tag("critical")
     @DisplayName("User can search products")
     @MethodSource("com.github.elenamikhailova.automation.data.ProductData#searchTerms")
     void canSearchProducts(String searchTerm) {
