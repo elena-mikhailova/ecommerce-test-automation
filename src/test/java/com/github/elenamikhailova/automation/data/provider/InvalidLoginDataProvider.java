@@ -1,45 +1,22 @@
-package com.github.elenamikhailova.automation.data;
+package com.github.elenamikhailova.automation.data.provider;
 
 import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
-import net.datafaker.Faker;
+import com.github.elenamikhailova.automation.data.factory.UserFactory;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;
 
-public class UserData {
-    private final Faker faker = new Faker();
-
-    public CreateUserRequest generateRandomUser() {
-        return CreateUserRequest.builder()
-                .name(faker.name().firstName())
-                .email("User_" + System.currentTimeMillis()
-                        + "_" + faker.number().digits(5) + "@test.com")
-                .password(faker.credentials().password())
-                .title(faker.options().option("Mr", "Mrs", "Miss"))
-                .birthDate(String.valueOf(faker.number().numberBetween(1, 29)))
-                .birthMonth(String.valueOf(faker.number().numberBetween(1, 13)))
-                .birthYear(String.valueOf(faker.number().numberBetween(1980, 1999)))
-                .firstName(faker.name().firstName())
-                .lastName(faker.name().lastName())
-                .company(faker.company().name())
-                .address1(faker.address().streetAddress())
-                .address2(faker.address().secondaryAddress())
-                .country(faker.address().country())
-                .zipCode(faker.address().zipCode())
-                .state(faker.address().state())
-                .city(faker.address().city())
-                .mobileNumber(faker.phoneNumber().cellPhone())
-                .build();
+public class InvalidLoginDataProvider {
+    private InvalidLoginDataProvider() {
     }
-
     public static Stream<Arguments> invalidLoginCases() {
-        UserData userData = new UserData();
-        CreateUserRequest user1 = userData.generateRandomUser();
-        CreateUserRequest user2 = userData.generateRandomUser();
-        CreateUserRequest user3 = userData.generateRandomUser();
-        CreateUserRequest user4 = userData.generateRandomUser();
-        CreateUserRequest user5 = userData.generateRandomUser();
-        CreateUserRequest user6 = userData.generateRandomUser();
+        UserFactory userFactory = new UserFactory();
+        CreateUserRequest user1 = userFactory.validUser();
+        CreateUserRequest user2 = userFactory.validUser();
+        CreateUserRequest user3 = userFactory.validUser();
+        CreateUserRequest user4 = userFactory.validUser();
+        CreateUserRequest user5 = userFactory.validUser();
+        CreateUserRequest user6 = userFactory.validUser();
 
         return Stream.of(
                 Arguments.of(
@@ -91,9 +68,5 @@ public class UserData {
                         "Bad request, email or password parameter is missing in POST request."
                 )
         );
-    }
-
-    public String generateFirstName() {
-        return faker.name().firstName();
     }
 }
