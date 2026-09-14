@@ -46,6 +46,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
+      - name: Check test environment
+        shell: bash
+        run: |
+          STATUS=$(curl -L -sS \
+            --connect-timeout 10 \
+            --max-time 30 \
+            -o /dev/null \
+            -w "%{http_code}" \
+            https://automationexercise.com/products) || STATUS="000"
+          
+          echo "Environment HTTP status: $STATUS"
+          
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Test environment is unavailable. HTTP status: $STATUS"
+            exit 1
+          fi
+
       - name: Set up Java
         uses: actions/setup-java@v6
         with:
@@ -74,7 +91,7 @@ jobs:
 
       - name: Publish JUnit test report
         id: junit-report
-        if: success() || failure()
+        if: ${{ always() && hashFiles('**/target/surefire-reports/TEST-*.xml') != '' }}
         continue-on-error: ${{ inputs.allow_failure }}
         uses: step-security/action-junit-report@v6
         with:
@@ -86,47 +103,48 @@ jobs:
           require_tests: true
 
       - name: Upload Surefire reports
-        if: always()
+        if: ${{ always() && hashFiles('target/surefire-reports/**') != '' }}
+        continue-on-error: true
         uses: actions/upload-artifact@v7
         with:
           name: surefire-reports-${{ inputs.groups }}-${{ inputs.browser }}
           path: target/surefire-reports/
-          if-no-files-found: warn
           retention-days: 14
 
       - name: Upload UI failure artifacts
-        if: always()
+        if: ${{ always() && hashFiles('build/reports/tests/**') != '' }}
+        continue-on-error: true
         uses: actions/upload-artifact@v7
         with:
           name: ui-failure-artifacts-${{ inputs.groups }}-${{ inputs.browser }}
           path: build/reports/tests/
-          if-no-files-found: ignore
           retention-days: 14
 
       - name: Upload Allure results
-        if: always()
+        if: ${{ always() && hashFiles('target/allure-results/**') != '' }}
+        continue-on-error: true
         uses: actions/upload-artifact@v7
         with:
           name: allure-results-${{ inputs.groups }}-${{ inputs.browser }}
           path: target/allure-results/
-          if-no-files-found: warn
           retention-days: 14
 
       - name: Generate Allure report
-        if: always()
+        if: ${{ always() && hashFiles('target/allure-results/**') != '' }}
+        continue-on-error: true
         run: ./mvnw allure:report
 
       - name: Upload Allure report
-        if: always()
+        if: ${{ always() && hashFiles('target/site/allure-maven-plugin/**') != '' }}
+        continue-on-error: true
         uses: actions/upload-artifact@v7
         with:
           name: allure-report-${{ inputs.groups }}-${{ inputs.browser }}
           path: target/site/allure-maven-plugin/
-          if-no-files-found: warn
           retention-days: 14
 
       - name: Notify Slack
-        if: ${{ always() && inputs.notify_slack }}
+        if: ${{ always() && inputs.notify_slack && hashFiles('**/target/surefire-reports/TEST-*.xml') != '' }}
         uses: slackapi/slack-github-action@v4.0.0
         with:
           webhook: ${{ secrets.slack_webhook_url }}
