@@ -1,0 +1,26 @@
+name: Cross-Browser Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ui-cross-browser:
+    name: UI Tests - ${{ matrix.browser }}
+
+    permissions:
+      contents: read
+      checks: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser:
+          - chrome
+          - firefox
+
+    uses: ./.github/workflows/reusable-test-run.yml
+    with:
+      groups: ui
+      exclude_quarantine: true
+      allow_failure: false
+      browser: ${{ matrix.browser }}
