@@ -5,7 +5,6 @@ import net.datafaker.Faker;
 public class UserDataGenerator {
     private final Faker faker = new Faker();
 
-
     public String firstName() {
         return faker.name().firstName();
     }
@@ -73,5 +72,4 @@ public class UserDataGenerator {
     public String mobileNumber() {
         return faker.phoneNumber().cellPhone();
     }
-
 }

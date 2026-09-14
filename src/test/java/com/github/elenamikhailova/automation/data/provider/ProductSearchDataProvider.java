@@ -13,15 +13,14 @@ public class ProductSearchDataProvider {
                 Arguments.of(
                         "Search for tshirt", "tshirt"),
                 Arguments.of(
-                        "Search for Search for jean", "jean")
+                        "Search for jean", "jean")
         );
     }
 
-    public static Stream<Arguments> inValidSearchCases() {
+    public static Stream<Arguments> invalidSearchCases() {
         return Stream.of(
                 Arguments.of(
                         "Search for nonexistent product", "hgytoe")
         );
     }
-
 }

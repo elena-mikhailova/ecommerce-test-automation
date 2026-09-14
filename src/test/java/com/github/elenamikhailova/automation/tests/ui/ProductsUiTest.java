@@ -22,7 +22,6 @@ public class ProductsUiTest extends BaseWebTest {
     void canSearchProducts(String caseName, String searchTerm) {
         productsPage.openPage();
         productsPage.searchProduct(searchTerm);
-        productsPage.waitForSearchResults();
 
         productsPage.getProductNames()
                 .shouldHave(sizeGreaterThan(0));
@@ -34,17 +33,15 @@ public class ProductsUiTest extends BaseWebTest {
         );
     }
 
-    @ParameterizedTest(name = "Search term: {0}")
-    @Smoke
+    @ParameterizedTest(name = "{0}")
     @Regression
     @DisplayName("Search returns no products for nonexistent value")
-    @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#inValidSearchCases")
+    @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#invalidSearchCases")
     void returnNoProductsForInvalidSearch(String caseName, String searchTerm) {
         productsPage.openPage();
         productsPage.searchProduct(searchTerm);
 
         productsPage.getProductNames()
                 .shouldHave(size(0));
-
     }
 }

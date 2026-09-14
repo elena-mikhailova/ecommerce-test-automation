@@ -45,7 +45,6 @@ public class UserApiTest extends BaseApiTest {
                 .isEqualTo(201);
         assertThat(message)
                 .isEqualTo("User created!");
-
     }
 
     @Test

@@ -8,7 +8,6 @@ import lombok.Getter;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -32,6 +31,9 @@ public class ProductsPage {
 
     private final SelenideElement viewCartLink =
             $(".modal-body a[href='/view_cart']");
+
+    private final SelenideElement searchedProductsTitle =
+            $(".features_items .title");
 
     @Step("Enter term")
     public void enterSearchTerm(String searchTerm) {
@@ -80,16 +82,13 @@ public class ProductsPage {
         return productName;
     }
 
-    @Step("Wait for search results")
-    public void waitForSearchResults() {
-        productNames.shouldHave(
-                sizeGreaterThan(0)
-        );
-    }
-
     @Step("Search product: {searchTerm}")
     public void searchProduct(String searchTerm) {
         enterSearchTerm(searchTerm);
         clickSearchButton();
+
+        searchedProductsTitle
+                .shouldBe(visible)
+                .shouldHave(exactText("SEARCHED PRODUCTS"));
     }
 }
