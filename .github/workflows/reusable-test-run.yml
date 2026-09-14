@@ -26,10 +26,17 @@ on:
         default: false
         type: boolean
 
+      browser:
+        description: Browser for UI tests
+        required: false
+        default: chrome
+        type: string
+
     secrets:
       slack_webhook_url:
         description: Slack incoming webhook URL
         required: false
+
 jobs:
   tests:
     name: ${{ inputs.groups }} tests
@@ -52,6 +59,7 @@ jobs:
         run: >
           ./mvnw clean test
           -Dgroups=${{ inputs.groups }}
+          -Dselenide.browser=${{ inputs.browser }}
           -DexcludedGroups=quarantine
           -Dselenide.headless=true
 
@@ -61,6 +69,7 @@ jobs:
         run: >
           ./mvnw clean test
           -Dgroups=${{ inputs.groups }}
+          -Dselenide.browser=${{ inputs.browser }}
           -Dselenide.headless=true
 
       - name: Publish JUnit test report
@@ -70,7 +79,7 @@ jobs:
         uses: step-security/action-junit-report@v6
         with:
           report_paths: '**/target/surefire-reports/TEST-*.xml'
-          check_name: '${{ inputs.groups }} Test Report'
+          check_name: '${{ inputs.groups }} Test Report - ${{ inputs.browser }}'
           detailed_summary: true
           include_passed: false
           fail_on_parse_error: true
@@ -80,7 +89,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: surefire-reports-${{ inputs.groups }}
+          name: surefire-reports-${{ inputs.groups }}-${{ inputs.browser }}
           path: target/surefire-reports/
           if-no-files-found: warn
           retention-days: 14
@@ -89,7 +98,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: ui-failure-artifacts-${{ inputs.groups }}
+          name: ui-failure-artifacts-${{ inputs.groups }}-${{ inputs.browser }}
           path: build/reports/tests/
           if-no-files-found: ignore
           retention-days: 14
@@ -98,7 +107,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: allure-results-${{ inputs.groups }}
+          name: allure-results-${{ inputs.groups }}-${{ inputs.browser }}
           path: target/allure-results/
           if-no-files-found: warn
           retention-days: 14
@@ -111,7 +120,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: allure-report-${{ inputs.groups }}
+          name: allure-report-${{ inputs.groups }}-${{ inputs.browser }}
           path: target/site/allure-maven-plugin/
           if-no-files-found: warn
           retention-days: 14
