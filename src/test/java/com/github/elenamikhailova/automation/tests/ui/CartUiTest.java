@@ -1,5 +1,7 @@
 package com.github.elenamikhailova.automation.tests.ui;
 
+import com.github.elenamikhailova.automation.annotation.Flaky;
+import com.github.elenamikhailova.automation.annotation.Quarantine;
 import com.github.elenamikhailova.automation.annotation.Regression;
 import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.base.BaseWebTest;
@@ -9,6 +11,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
+@Flaky(
+        reason = "Cart flow is unstable because consent popup and add-to-cart modal appear asynchronously"
+)
+@Quarantine(
+        issue = "https://github.com/elena-mikhailova/ecommerce-test-automation/issues/37"
+)
 
 public class CartUiTest extends BaseWebTest {
 
