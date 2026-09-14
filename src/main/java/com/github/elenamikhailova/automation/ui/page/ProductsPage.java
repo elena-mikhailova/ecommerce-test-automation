@@ -6,6 +6,8 @@ import com.github.elenamikhailova.automation.ui.component.ConsentPopup;
 import io.qameta.allure.Step;
 import lombok.Getter;
 
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ProductsPage {
@@ -31,35 +33,50 @@ public class ProductsPage {
 
     @Step("Enter term")
     public void enterSearchTerm(String searchTerm) {
-        searchInput.setValue(searchTerm);
+        searchInput
+                .shouldBe(visible)
+                .shouldBe(enabled)
+                .setValue(searchTerm);
     }
 
     @Step("Click search button")
     public void clickSearchButton() {
-        searchButton.click();
+        searchButton
+                .shouldBe(visible)
+                .shouldBe(enabled)
+                .click();
     }
 
     @Step("Open products page")
     public void openPage() {
         open(PRODUCTS_PATH);
         consentPopup.acceptIfVisible();
+        searchInput
+                .shouldBe(visible)
+                .shouldBe(enabled);
     }
 
     @Step("Click view cart link")
     public void clickViewCartLink() {
-        viewCartLink.click();
+        viewCartLink
+                .shouldBe(visible)
+                .click();
     }
 
     @Step("Add first available product to cart")
     public String addFirstProductToCart() {
-        SelenideElement productCard = productCards.first();
+        SelenideElement productCard = productCards.first()
+                .shouldBe(visible);
 
         String productName = productCard
                 .$(".productinfo p")
+                .shouldBe(visible)
                 .getText();
+        productCard.hover();
 
         productCard
                 .$(".productinfo .add-to-cart")
+                .shouldBe(visible)
                 .click();
 
         return productName;
