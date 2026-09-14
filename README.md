@@ -1,6 +1,6 @@
 # E-commerce Test Automation
 
-[![Tests](https://github.com/elena-mikhailova/ecommerce-test-automation/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/elena-mikhailova/ecommerce-test-automation/actions/workflows/tests.yml)
+[![Tests](https://github.com/elena-mikhailova/ecommerce-test-automation/actions/workflows/test-framework-ci.yml/badge.svg?branch=main)](https://github.com/elena-mikhailova/ecommerce-test-automation/actions/workflows/test-framework-ci.yml)
 
 Test automation project for [Automation Exercise](https://automationexercise.com/).
 
@@ -14,6 +14,7 @@ The project contains API and UI automated tests for common e-commerce scenarios.
 - REST Assured
 - AssertJ
 - Selenide
+- Jackson
 - Allure
 - Datafaker
 - Lombok
@@ -39,6 +40,7 @@ The project contains API and UI automated tests for common e-commerce scenarios.
 - Login with valid credentials
 - Login with invalid credentials
 - Parameterized product search
+- Product search with no results
 - Add product to cart
 - Remove product from cart
 
@@ -46,18 +48,24 @@ UI login tests use API for user creation and cleanup.
 
 Cart tests use an available product instead of depending on a hardcoded product name.
 
+## Test Tags
+
+Tests are grouped using JUnit 5 tags:
+
+- `smoke` — critical checks
+- `regression` — main regression suite
+- `full-regression` — full test suite
+- `api` — API tests
+- `ui` — UI tests
+
+Custom annotations are used instead of direct `@Tag` declarations in test classes.
+
 ## Run Tests
 
 Run all tests in Chrome:
 
 ```bash
 ./mvnw clean test
-```
-
-Run tests in Firefox:
-
-```bash
-./mvnw clean test -Dselenide.browser=firefox
 ```
 
 Run tests in headless mode:
@@ -68,10 +76,10 @@ Run tests in headless mode:
 
 ## Allure Report
 
-If Allure CLI is installed:
+Generate and open the report locally:
 
 ```bash
-allure serve target/allure-results
+./mvnw allure:serve
 ```
 
 ## Configuration
@@ -82,13 +90,23 @@ Application URLs are stored in:
 src/test/resources/config.properties
 ```
 
-Chrome is used as the default browser. Firefox can be selected using the `selenide.browser` system property.
+Parallel execution settings are stored in:
+
+```text
+src/test/resources/junit-platform.properties
+```
+
+Chrome is used as the default browser.
 
 ## CI
 
-GitHub Actions runs API and UI tests automatically:
+GitHub Actions runs automated checks:
 
-- on pull requests to `main`
-- on pushes to `main`
+- smoke tests on pull requests to `main`
+- regression tests on pushes to `main`
+- nightly full regression
+- cross-browser UI tests in Chrome and Firefox
+- environment health check before test execution
+- JUnit, Surefire, UI failure, and Allure reports
 
-UI tests run in headless Chrome in CI.
+UI tests run in headless mode in CI.
