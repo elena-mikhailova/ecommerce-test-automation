@@ -6,8 +6,9 @@ import com.github.elenamikhailova.automation.ui.component.ConsentPopup;
 import io.qameta.allure.Step;
 import lombok.Getter;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ProductsPage {
@@ -16,7 +17,7 @@ public class ProductsPage {
     private final ConsentPopup consentPopup = new ConsentPopup();
 
     private final SelenideElement searchInput =
-            $("[placeholder='Search Product']");
+            $("#search_product");
 
     private final SelenideElement searchButton =
             $("#submit_search");
@@ -31,11 +32,13 @@ public class ProductsPage {
     private final SelenideElement viewCartLink =
             $(".modal-body a[href='/view_cart']");
 
+    private final SelenideElement searchedProductsTitle =
+            $(".features_items .title");
+
     @Step("Enter term")
     public void enterSearchTerm(String searchTerm) {
         searchInput
-                .shouldBe(visible)
-                .shouldBe(enabled)
+                .shouldBe(editable)
                 .setValue(searchTerm);
     }
 
@@ -51,15 +54,12 @@ public class ProductsPage {
     public void openPage() {
         open(PRODUCTS_PATH);
         consentPopup.acceptIfVisible();
-        searchInput
-                .shouldBe(visible)
-                .shouldBe(enabled);
     }
 
     @Step("Click view cart link")
     public void clickViewCartLink() {
         viewCartLink
-                .shouldBe(visible)
+                .shouldBe(visible, Duration.ofSeconds(15))
                 .click();
     }
 
@@ -75,7 +75,7 @@ public class ProductsPage {
         productCard.hover();
 
         productCard
-                .$(".productinfo .add-to-cart")
+                .$(".product-overlay .add-to-cart")
                 .shouldBe(visible)
                 .click();
 
@@ -86,5 +86,9 @@ public class ProductsPage {
     public void searchProduct(String searchTerm) {
         enterSearchTerm(searchTerm);
         clickSearchButton();
+
+        searchedProductsTitle
+                .shouldBe(visible)
+                .shouldHave(exactText("SEARCHED PRODUCTS"));
     }
 }

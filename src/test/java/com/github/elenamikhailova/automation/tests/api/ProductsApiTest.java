@@ -39,7 +39,7 @@ public class ProductsApiTest extends BaseApiTest {
                 .isNotEmpty();
     }
 
-    @ParameterizedTest(name = "Search term: {0}")
+    @ParameterizedTest(name = "{0}")
     @Regression
     @DisplayName("POST /searchProduct returns matching products")
     @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#validSearchCases")

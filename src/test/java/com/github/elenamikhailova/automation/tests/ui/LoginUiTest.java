@@ -60,7 +60,6 @@ public class LoginUiTest extends BaseWebTest {
         loginPage.getErrorMessage()
                 .shouldBe(visible)
                 .shouldHave(exactText("Your email or password is incorrect!"));
-
     }
 
     @AfterEach

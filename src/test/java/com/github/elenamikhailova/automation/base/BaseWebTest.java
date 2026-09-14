@@ -18,7 +18,7 @@ public abstract class BaseWebTest {
     @BeforeAll
     static void setUpUi() {
         Configuration.baseUrl = TestConfig.getUiBaseUrl();
-        // The demo site may wait too long for third-party resources
+        // Use eager loading to avoid waiting for slow third-party resources
         Configuration.pageLoadStrategy = "eager";
         Configuration.browser = System.getProperty("selenide.browser", "chrome");
         Configuration.browserSize = "1920x1080";
