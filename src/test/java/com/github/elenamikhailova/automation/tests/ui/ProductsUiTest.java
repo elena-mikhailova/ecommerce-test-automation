@@ -22,6 +22,7 @@ public class ProductsUiTest extends BaseWebTest {
     void canSearchProducts(String caseName, String searchTerm) {
         productsPage.openPage();
         productsPage.searchProduct(searchTerm);
+        productsPage.waitForSearchResults();
 
         productsPage.getProductNames()
                 .shouldHave(sizeGreaterThan(0));
