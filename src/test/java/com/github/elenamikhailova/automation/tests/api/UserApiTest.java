@@ -4,7 +4,9 @@ import com.github.elenamikhailova.automation.annotation.Regression;
 import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
 import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
+import com.github.elenamikhailova.automation.api.model.response.ProductsResponse;
 import com.github.elenamikhailova.automation.api.model.response.UserDetailsResponse;
+import com.github.elenamikhailova.automation.api.util.ResponseMapper;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import com.github.elenamikhailova.automation.data.factory.UserFactory;
 import io.restassured.response.Response;
@@ -58,7 +60,7 @@ public class UserApiTest extends BaseApiTest {
                 .statusCode(200);
 
         UserDetailsResponse body =
-                getUserResponse.as(UserDetailsResponse.class);
+                ResponseMapper.map(getUserResponse, UserDetailsResponse.class);
         assertThat(body.responseCode())
                 .isEqualTo(200);
         assertThat(body.user().email())
@@ -146,7 +148,7 @@ public class UserApiTest extends BaseApiTest {
         getUserResponse.then()
                 .statusCode(200);
         UserDetailsResponse body =
-                getUserResponse.as(UserDetailsResponse.class);
+                ResponseMapper.map(getUserResponse, UserDetailsResponse.class);
         assertThat(body.responseCode())
                 .isEqualTo(200);
         assertThat(body.user().firstName())
