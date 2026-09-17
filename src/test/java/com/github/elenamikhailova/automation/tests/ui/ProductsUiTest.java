@@ -20,8 +20,8 @@ public class ProductsUiTest extends BaseWebTest {
     @DisplayName("User can search products")
     @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#validSearchCases")
     void canSearchProducts(String caseName, String searchTerm) {
-        productsPage.openPage();
-        productsPage.searchProduct(searchTerm);
+        productsPage.openPage()
+                .searchProduct(searchTerm);
 
         productsPage.getProductNames()
                 .shouldHave(sizeGreaterThan(0));
@@ -38,8 +38,8 @@ public class ProductsUiTest extends BaseWebTest {
     @DisplayName("Search returns no products for nonexistent value")
     @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#invalidSearchCases")
     void returnNoProductsForInvalidSearch(String caseName, String searchTerm) {
-        productsPage.openPage();
-        productsPage.searchProduct(searchTerm);
+        productsPage.openPage()
+                .searchProduct(searchTerm);
 
         productsPage.getProductNames()
                 .shouldHave(size(0));

@@ -43,8 +43,8 @@ public class LoginUiTest extends BaseWebTest {
         assertThat(createUserResponse.jsonPath().getInt("responseCode"))
                 .isEqualTo(201);
         user = newUser;
-        loginPage.openPage();
-        loginPage.login(user.getEmail(), user.getPassword());
+        loginPage.openPage()
+                .login(user.getEmail(), user.getPassword());
         header.getLoggedInUser()
                 .shouldBe(visible)
                 .shouldHave(text(user.getName()));
@@ -55,8 +55,8 @@ public class LoginUiTest extends BaseWebTest {
     @DisplayName("User cannot log in with invalid credentials")
     void cannotLoginWithInvalidCredentials() {
         CreateUserRequest invalidUser = userFactory.validUser();
-        loginPage.openPage();
-        loginPage.login(invalidUser.getEmail(), invalidUser.getPassword());
+        loginPage.openPage()
+                .login(invalidUser.getEmail(), invalidUser.getPassword());
         loginPage.getErrorMessage()
                 .shouldBe(visible)
                 .shouldHave(exactText("Your email or password is incorrect!"));
