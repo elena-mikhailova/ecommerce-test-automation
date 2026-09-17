@@ -5,6 +5,7 @@ import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.api.client.ProductsApiClient;
 import com.github.elenamikhailova.automation.api.model.response.ProductResponse;
 import com.github.elenamikhailova.automation.api.model.response.ProductsResponse;
+import com.github.elenamikhailova.automation.api.util.ResponseMapper;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,7 @@ public class ProductsApiTest extends BaseApiTest {
         Response response = productsApiClient.getAllProducts();
         response.then()
                 .statusCode(200);
-        ProductsResponse body = response.as(ProductsResponse.class);
+        ProductsResponse body = ResponseMapper.map(response, ProductsResponse.class);
         assertThat(body.responseCode())
                 .isEqualTo(200);
         assertThat(body.products())
@@ -47,7 +48,7 @@ public class ProductsApiTest extends BaseApiTest {
         Response response = productsApiClient.searchProduct(searchTerm);
         response.then()
                 .statusCode(200);
-        ProductsResponse body = response.as(ProductsResponse.class);
+        ProductsResponse body =  ResponseMapper.map(response, ProductsResponse.class);
         assertThat(body.responseCode())
                 .isEqualTo(200);
         assertThat(body.products())
