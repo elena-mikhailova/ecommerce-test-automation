@@ -1,5 +1,7 @@
 package com.github.elenamikhailova.automation.tests.ui;
 
+import com.github.elenamikhailova.automation.annotation.Flaky;
+import com.github.elenamikhailova.automation.annotation.Quarantine;
 import com.github.elenamikhailova.automation.annotation.Regression;
 import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.base.BaseWebTest;
@@ -34,6 +36,12 @@ public class ProductsUiTest extends BaseWebTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @Flaky(
+            reason = "Products flow is unstable because consent popup"
+    )
+    @Quarantine(
+            issue = "https://github.com/elena-mikhailova/ecommerce-test-automation/issues/37"
+    )
     @Regression
     @DisplayName("Search returns no products for nonexistent value")
     @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#invalidSearchCases")
