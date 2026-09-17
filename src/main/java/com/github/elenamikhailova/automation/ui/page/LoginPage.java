@@ -25,13 +25,15 @@ public class LoginPage {
             emailInput.closest("form").$("p");
 
     @Step("Enter email")
-    public void enterEmail(String email) {
+    public LoginPage enterEmail(String email) {
         emailInput.setValue(email);
+        return this;
     }
 
     @Step("Enter password")
-    public void enterPassword(String password) {
+    public LoginPage enterPassword(String password) {
         passwordInput.setValue(password);
+        return this;
     }
 
     @Step("Click login button")
@@ -41,13 +43,14 @@ public class LoginPage {
 
     @Step("Login user")
     public void login(String email, String password) {
-        enterEmail(email);
-        enterPassword(password);
-        clickLoginButton();
+        enterEmail(email)
+                .enterPassword(password)
+                .clickLoginButton();
     }
 
     @Step("Open login page")
-    public void openPage() {
+    public LoginPage openPage() {
         open(LOGIN_PATH);
+        return this;
     }
 }

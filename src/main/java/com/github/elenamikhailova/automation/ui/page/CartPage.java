@@ -18,10 +18,11 @@ public class CartPage {
             $$("tr[id^='product-']");
 
     @Step("Delete product '{productName}' from cart")
-    public void deleteProduct(String productName) {
+    public CartPage deleteProduct(String productName) {
         SelenideElement productRow =
                 productRows.findBy(text(productName));
 
         productRow.$(".cart_quantity_delete").click();
+        return this;
     }
 }

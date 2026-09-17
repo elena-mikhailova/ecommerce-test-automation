@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
+
 @Flaky(
         reason = "Cart flow is unstable because consent popup and add-to-cart modal appear asynchronously"
 )
@@ -21,16 +22,17 @@ import static com.codeborne.selenide.Condition.*;
 public class CartUiTest extends BaseWebTest {
 
     private final ProductsPage productsPage = new ProductsPage();
-    private final CartPage cartPage = new CartPage();
 
     @Test
     @Smoke
     @Regression
     @DisplayName("User can add product to cart")
     void canAddProductToCart() {
-        productsPage.openPage();
-        String productName = productsPage.addFirstProductToCart();
-        productsPage.clickViewCartLink();
+        String productName = productsPage
+                .openPage()
+                .addFirstProductToCart();
+
+        CartPage cartPage = productsPage.clickViewCartLink();
         cartPage.getProductNames()
                 .findBy(exactText(productName))
                 .shouldBe(visible);
@@ -40,14 +42,18 @@ public class CartUiTest extends BaseWebTest {
     @DisplayName("User can delete product from cart")
     @Regression
     void canDeleteProductFromCart() {
-        productsPage.openPage();
-        String productName = productsPage.addFirstProductToCart();
-        productsPage.clickViewCartLink();
-        cartPage.getProductNames()
+        String productName = productsPage
+                .openPage()
+                .addFirstProductToCart();
+
+        CartPage cartPage = productsPage.clickViewCartLink();
+        cartPage
+                .getProductNames()
                 .findBy(exactText(productName))
                 .shouldBe(visible);
-        cartPage.deleteProduct(productName);
-        cartPage.getProductNames()
+        cartPage
+                .deleteProduct(productName)
+                .getProductNames()
                 .findBy(exactText(productName))
                 .shouldNot(exist);
     }

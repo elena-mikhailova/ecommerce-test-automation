@@ -36,31 +36,35 @@ public class ProductsPage {
             $(".features_items .title");
 
     @Step("Enter term")
-    public void enterSearchTerm(String searchTerm) {
+    public ProductsPage enterSearchTerm(String searchTerm) {
         searchInput
                 .shouldBe(editable)
                 .setValue(searchTerm);
+        return this;
     }
 
     @Step("Click search button")
-    public void clickSearchButton() {
+    public ProductsPage clickSearchButton() {
         searchButton
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .click();
+        return this;
     }
 
     @Step("Open products page")
-    public void openPage() {
+    public ProductsPage openPage() {
         open(PRODUCTS_PATH);
         consentPopup.acceptIfVisible();
+        return this;
     }
 
     @Step("Click view cart link")
-    public void clickViewCartLink() {
+    public CartPage clickViewCartLink() {
         viewCartLink
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .click();
+        return new CartPage();
     }
 
     @Step("Add first available product to cart")
@@ -83,12 +87,13 @@ public class ProductsPage {
     }
 
     @Step("Search product: {searchTerm}")
-    public void searchProduct(String searchTerm) {
-        enterSearchTerm(searchTerm);
-        clickSearchButton();
+    public ProductsPage searchProduct(String searchTerm) {
+        enterSearchTerm(searchTerm)
+                .clickSearchButton();
 
         searchedProductsTitle
                 .shouldBe(visible)
                 .shouldHave(exactText("SEARCHED PRODUCTS"));
+        return this;
     }
 }
