@@ -27,25 +27,7 @@ public class UserApiClient {
     @Step("Create user account")
     public Response createUser(CreateUserRequest user) {
         log.info("Creating account via {}", CREATE_ACCOUNT);
-        return given()
-                .spec(requestSpecification)
-                .formParam("name", user.getName())
-                .formParam("email", user.getEmail())
-                .formParam("password", user.getPassword())
-                .formParam("title", user.getTitle())
-                .formParam("birth_date", user.getBirthDate())
-                .formParam("birth_month", user.getBirthMonth())
-                .formParam("birth_year", user.getBirthYear())
-                .formParam("firstname", user.getFirstName())
-                .formParam("lastname", user.getLastName())
-                .formParam("company", user.getCompany())
-                .formParam("address1", user.getAddress1())
-                .formParam("address2", user.getAddress2())
-                .formParam("country", user.getCountry())
-                .formParam("zipcode", user.getZipCode())
-                .formParam("state", user.getState())
-                .formParam("city", user.getCity())
-                .formParam("mobile_number", user.getMobileNumber())
+        return requestWithUserData(user)
                 .when()
                 .post(CREATE_ACCOUNT);
     }
@@ -91,6 +73,12 @@ public class UserApiClient {
     @Step("Update user account")
     public Response updateAccount(CreateUserRequest user) {
         log.info("Updating account via {}", UPDATE_ACCOUNT);
+        return requestWithUserData(user)
+                .when()
+                .put(UPDATE_ACCOUNT);
+    }
+
+    private RequestSpecification requestWithUserData(CreateUserRequest user) {
         return given()
                 .spec(requestSpecification)
                 .formParam("name", user.getName())
@@ -109,9 +97,7 @@ public class UserApiClient {
                 .formParam("zipcode", user.getZipCode())
                 .formParam("state", user.getState())
                 .formParam("city", user.getCity())
-                .formParam("mobile_number", user.getMobileNumber())
-                .when()
-                .put(UPDATE_ACCOUNT);
+                .formParam("mobile_number", user.getMobileNumber());
     }
 }
 

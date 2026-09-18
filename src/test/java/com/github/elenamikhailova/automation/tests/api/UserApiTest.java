@@ -4,7 +4,6 @@ import com.github.elenamikhailova.automation.annotation.Regression;
 import com.github.elenamikhailova.automation.annotation.Smoke;
 import com.github.elenamikhailova.automation.api.client.UserApiClient;
 import com.github.elenamikhailova.automation.api.model.request.CreateUserRequest;
-import com.github.elenamikhailova.automation.api.model.response.ProductsResponse;
 import com.github.elenamikhailova.automation.api.model.response.UserDetailsResponse;
 import com.github.elenamikhailova.automation.api.util.ResponseMapper;
 import com.github.elenamikhailova.automation.base.BaseApiTest;
