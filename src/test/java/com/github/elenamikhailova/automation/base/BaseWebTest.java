@@ -26,7 +26,7 @@ public abstract class BaseWebTest {
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
-                .savePageSource(false));
+                .savePageSource(true));
     }
 
     @AfterEach

@@ -23,16 +23,9 @@ public class ProductsUiTest extends BaseWebTest {
     @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#validSearchCases")
     void canSearchProducts(String caseName, String searchTerm) {
         productsPage.openPage()
-                .searchProduct(searchTerm);
-
-        productsPage.getProductNames()
-                .shouldHave(sizeGreaterThan(0));
-
-        productsPage.getProductNames().shouldHave(anyMatch(
-                        "at least one product name contains search term",
-                        element -> element.getText().toLowerCase().contains(searchTerm.toLowerCase())
-                )
-        );
+                .searchProduct(searchTerm)
+                .shouldHaveProducts()
+                .shouldContainProductMatch(searchTerm);
     }
 
     @ParameterizedTest(name = "{0}")
@@ -47,9 +40,7 @@ public class ProductsUiTest extends BaseWebTest {
     @MethodSource("com.github.elenamikhailova.automation.data.provider.ProductSearchDataProvider#invalidSearchCases")
     void returnNoProductsForInvalidSearch(String caseName, String searchTerm) {
         productsPage.openPage()
-                .searchProduct(searchTerm);
-
-        productsPage.getProductNames()
-                .shouldHave(size(0));
+                .searchProduct(searchTerm)
+                .shouldHaveNoProducts();
     }
 }

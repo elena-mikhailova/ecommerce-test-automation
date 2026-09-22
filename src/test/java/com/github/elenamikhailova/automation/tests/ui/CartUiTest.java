@@ -10,8 +10,6 @@ import com.github.elenamikhailova.automation.ui.page.ProductsPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.*;
-
 @Flaky(
         reason = "Cart flow is unstable because consent popup and add-to-cart modal appear asynchronously"
 )
@@ -33,9 +31,7 @@ public class CartUiTest extends BaseWebTest {
                 .addFirstProductToCart();
 
         CartPage cartPage = productsPage.clickViewCartLink();
-        cartPage.getProductNames()
-                .findBy(exactText(productName))
-                .shouldBe(visible);
+        cartPage.shouldContainProduct(productName);
     }
 
     @Test
@@ -47,14 +43,8 @@ public class CartUiTest extends BaseWebTest {
                 .addFirstProductToCart();
 
         CartPage cartPage = productsPage.clickViewCartLink();
-        cartPage
-                .getProductNames()
-                .findBy(exactText(productName))
-                .shouldBe(visible);
-        cartPage
+        cartPage.shouldContainProduct(productName)
                 .deleteProduct(productName)
-                .getProductNames()
-                .findBy(exactText(productName))
-                .shouldNot(exist);
+                .shouldNotContainProduct(productName);
     }
 }
