@@ -2,8 +2,8 @@ package com.github.elenamikhailova.automation.ui.page;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import lombok.Getter;
 
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -20,9 +20,16 @@ public class LoginPage {
     private final SelenideElement loginButton =
             $("[data-qa='login-button']");
 
-    @Getter
     private final SelenideElement errorMessage =
             emailInput.closest("form").$("p");
+
+    @Step("Verify login error")
+    public LoginPage shouldHaveError(String expectedError) {
+        errorMessage
+                .shouldBe(visible)
+                .shouldHave(exactText(expectedError));
+        return this;
+    }
 
     @Step("Enter email")
     public LoginPage enterEmail(String email) {
