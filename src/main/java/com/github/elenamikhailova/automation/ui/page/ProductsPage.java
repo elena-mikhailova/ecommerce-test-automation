@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.time.Duration;
 
+import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -22,7 +23,6 @@ public class ProductsPage {
     private final SelenideElement searchButton =
             $("#submit_search");
 
-    @Getter
     private final ElementsCollection productNames =
             $$(".product-image-wrapper .productinfo p");
 
@@ -34,6 +34,31 @@ public class ProductsPage {
 
     private final SelenideElement searchedProductsTitle =
             $(".features_items .title");
+
+    @Step("Verify search returned products")
+    public ProductsPage shouldHaveProducts() {
+        productNames
+                .shouldHave(sizeGreaterThan(0));
+        return this;
+    }
+    @Step("Verify search returned no products")
+    public ProductsPage shouldHaveNoProducts() {
+        productNames
+                .shouldHave(size(0));
+        return this;
+    }
+
+    @Step("Verify at least one product contains")
+    public ProductsPage shouldContainProductMatch(String searchTerm) {
+        productNames
+                .shouldHave(anyMatch(
+                                "at least one product name contains search term",
+                                element -> element.getText().toLowerCase()
+                                        .contains(searchTerm.toLowerCase())
+                        )
+                );
+        return this;
+    }
 
     @Step("Enter term")
     public ProductsPage enterSearchTerm(String searchTerm) {

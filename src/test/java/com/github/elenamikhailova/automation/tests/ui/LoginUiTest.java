@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginUiTest extends BaseWebTest {
@@ -45,9 +44,7 @@ public class LoginUiTest extends BaseWebTest {
         user = newUser;
         loginPage.openPage()
                 .login(user.getEmail(), user.getPassword());
-        header.getLoggedInUser()
-                .shouldBe(visible)
-                .shouldHave(text(user.getName()));
+        header.shouldDisplayUser(user.getName());
     }
 
     @Test
@@ -57,9 +54,7 @@ public class LoginUiTest extends BaseWebTest {
         CreateUserRequest invalidUser = userFactory.validUser();
         loginPage.openPage()
                 .login(invalidUser.getEmail(), invalidUser.getPassword());
-        loginPage.getErrorMessage()
-                .shouldBe(visible)
-                .shouldHave(exactText("Your email or password is incorrect!"));
+        loginPage.shouldHaveError("Your email or password is incorrect!");
     }
 
     @AfterEach
