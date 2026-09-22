@@ -4,12 +4,12 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.github.elenamikhailova.automation.ui.component.ConsentPopup;
 import io.qameta.allure.Step;
-import lombok.Getter;
 
 import java.time.Duration;
 
 import static com.codeborne.selenide.CollectionCondition.*;
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ProductsPage {
@@ -41,6 +41,7 @@ public class ProductsPage {
                 .shouldHave(sizeGreaterThan(0));
         return this;
     }
+
     @Step("Verify search returned no products")
     public ProductsPage shouldHaveNoProducts() {
         productNames
@@ -62,18 +63,13 @@ public class ProductsPage {
 
     @Step("Enter term")
     public ProductsPage enterSearchTerm(String searchTerm) {
-        searchInput
-                .shouldBe(editable)
-                .setValue(searchTerm);
+        searchInput.setValue(searchTerm);
         return this;
     }
 
     @Step("Click search button")
     public ProductsPage clickSearchButton() {
-        searchButton
-                .shouldBe(visible)
-                .shouldBe(enabled)
-                .click();
+        searchButton.click();
         return this;
     }
 
