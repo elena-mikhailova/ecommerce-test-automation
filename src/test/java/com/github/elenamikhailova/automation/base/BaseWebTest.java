@@ -5,12 +5,15 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import com.github.elenamikhailova.automation.annotation.FullRegression;
 import com.github.elenamikhailova.automation.annotation.Ui;
 import com.github.elenamikhailova.automation.config.TestConfig;
+import com.github.elenamikhailova.automation.extension.TestExecutionWatcher;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
+@ExtendWith(TestExecutionWatcher.class)
 @Ui
 @FullRegression
 public abstract class BaseWebTest {
