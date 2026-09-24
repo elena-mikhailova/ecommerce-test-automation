@@ -24,12 +24,27 @@ public final class TestConfig {
     private TestConfig() {
     }
 
+    private static String getProperty(String propertyName, String environmentVariable) {
+        String systemProperty = System.getProperty(propertyName);
+
+        if (systemProperty != null && !systemProperty.isBlank()) {
+            return systemProperty;
+        }
+
+        String environmentValue = System.getenv(environmentVariable);
+
+        if (environmentValue != null && !environmentValue.isBlank()) {
+            return environmentValue;
+        }
+        return PROPERTIES.getProperty(propertyName);
+    }
+
     public static String getApiBaseUrl() {
-        return PROPERTIES.getProperty("api.base.url");
+        return getProperty("api.base.url", "API_BASE_URL");
     }
 
     public static String getUiBaseUrl() {
-        return PROPERTIES.getProperty("ui.base.url");
+        return getProperty("ui.base.url", "UI_BASE_URL");
     }
 }
 
