@@ -5,8 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import com.github.elenamikhailova.automation.ui.component.ConsentPopup;
 import io.qameta.allure.Step;
 
-import java.time.Duration;
-
 import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
@@ -14,6 +12,12 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class ProductsPage {
     private static final String PRODUCTS_PATH = "/products";
+
+    private static final String ADD_TO_CART_BUTTON =
+            ".single-products .add-to-cart";
+
+    private static final String PRODUCT_NAME =
+            ".productinfo p";
 
     private final ConsentPopup consentPopup = new ConsentPopup();
 
@@ -83,7 +87,7 @@ public class ProductsPage {
     @Step("Click view cart link")
     public CartPage clickViewCartLink() {
         viewCartLink
-                .shouldBe(visible, Duration.ofSeconds(15))
+                .shouldBe(visible)
                 .click();
         return new CartPage();
     }
@@ -92,19 +96,20 @@ public class ProductsPage {
     public String addFirstProductToCart() {
         SelenideElement productCard = productCards.first()
                 .shouldBe(visible);
-
         String productName = productCard
-                .$(".productinfo p")
+                .$(PRODUCT_NAME)
                 .shouldBe(visible)
                 .getText();
-        productCard.hover();
-
-        productCard
-                .$(".product-overlay .add-to-cart")
-                .shouldBe(visible)
-                .click();
-
+        addProductToCart(productCard);
         return productName;
+    }
+
+    @Step("Add product to cart")
+    public void addProductToCart(SelenideElement productCard) {
+        productCard.$(ADD_TO_CART_BUTTON)
+                .shouldBe(visible)
+                .shouldHave(exactText("Add to cart"))
+                .click();
     }
 
     @Step("Search product: {searchTerm}")
